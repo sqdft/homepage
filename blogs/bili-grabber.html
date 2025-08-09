@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B站视频下载网页程序 - Node.js环境部署指南</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+        h2 {
+            color: #27ae60;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        pre {
+            background: #eee;
+            padding: 10px 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        a.download-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        a.download-link:hover {
+            background-color: #219653;
+        }
+        .note-box {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-left: 5px solid #27ae60;
+            color: #2d6a4f;
+            font-weight: 600;
+        }
+        .back-link {
+            margin-top: 40px;
+            display: inline-block;
+            color: #27ae60;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>B站视频下载网页程序</h1>
+        <p>基于 Node.js 的简易 B站视频下载网页程序，方便用户快速下载 B站视频。</p>
+
+        <h2>环境需求</h2>
+        <ul>
+            <li>已安装 Node.js</li>
+            <li>通过命令 <code>node -v</code> 和 <code>npm -v</code> 查看版本</li>
+        </ul>
+
+        <h2>安装步骤</h2>
+        <ol>
+            <li>初始化项目：<pre>npm init -y</pre></li>
+            <li>安装依赖包：<pre>npm install express axios cors</pre></li>
+            <li>将项目文件解压到工作目录</li>
+        </ol>
+
+        <h2>项目文件下载</h2>
+        <p>项目压缩包下载链接（百度网盘）：</p>
+        <a href="https://pan.baidu.com/s/1p7-aNJifuvPi-Ito2PaxcA?pwd=kgca" target="_blank" class="download-link" rel="noopener noreferrer">bili-grabber.zip（提取码：kgca）</a>
+
+        <h2>启动服务</h2>
+        <pre>node server.js</pre>
+        <p>启动成功后，打开浏览器访问 <code>http://localhost:端口号</code> 使用视频下载功能。</p>
+
+        <div class="note-box">
+            <p>说明：该程序基于 Express 框架，使用 Axios 请求 B站接口，支持 CORS 跨域访问。适合本地或服务器部署。</p>
+        </div>
+
+        <h2>反馈与联系</h2>
+        <p>有问题或建议，欢迎通过 <a href="https://github.com/sqdft" target="_blank" rel="noopener noreferrer">GitHub</a> 联系我。</p>
+
+        <a href="/" class="back-link">&laquo; 返回首页</a>
+    </div>
+</body>
+</html>
