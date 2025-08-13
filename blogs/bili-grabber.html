@@ -4,21 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>B站视频下载网页程序 - Node.js环境部署指南</title>
+    <link rel="dns-prefetch" href="//g.gtimg.cn">
+    <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script src="/static/js/bg.js" defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4;
+            /* 背景由全局 CSS 提供全屏图片与毛玻璃效果 */
         }
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background: #fff;
             padding: 20px 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h1 {
             color: #333;
@@ -77,10 +79,24 @@
         .back-link:hover {
             text-decoration: underline;
         }
+        .back-links { margin-top: 20px; }
+        .back-links a { color: #007aff; text-decoration: none; margin-right: 12px; }
+        .back-links a:hover { text-decoration: underline; }
+        .join-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #27ae60;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .join-button:hover { background-color: #219653; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container article-container">
         <h1>B站视频下载网页程序</h1>
         <p>基于 Node.js 的简易 B站视频下载网页程序，方便用户快速下载 B站视频。</p>
 
@@ -112,7 +128,11 @@
         <h2>反馈与联系</h2>
         <p>有问题或建议，欢迎通过 <a href="https://github.com/sqdft" target="_blank" rel="noopener noreferrer">GitHub</a> 联系我。</p>
 
-        <a href="/" class="back-link">&laquo; 返回首页</a>
+        <div class="back-links">
+            <a href="/blogs/index.html">返回文章列表</a>
+            <a href="/index.html">返回首页</a>
+        </div>
+        <a href="https://qm.qq.com/q/MBy8km4u4i" target="_blank" class="join-button">立即加入 AI 交流群</a>
     </div>
 </body>
 </html>

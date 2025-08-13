@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh">
 
 <head>
@@ -10,14 +10,20 @@
     <meta name="keywords" content="Java,Spring,个人博客，微信小程序，博客">
     <meta name="format-detection" content="telephone=no">
     <link rel="shortcut icon" href="favicon.ico">
+    <link rel="preconnect" href="https://cdn.staticfile.org" crossorigin>
+    <link rel="dns-prefetch" href="//cdn.staticfile.org">
+    <link rel="dns-prefetch" href="//g.gtimg.cn">
+    <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
     <link rel="stylesheet" href="static/css/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.fancybox@2.1.5/source/jquery.fancybox.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/2.1.5/jquery.fancybox.min.css">
     <script type="text/javascript">
         if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
             alert('朋友，上古浏览器不支持呢~');
         }
     </script>
+    <!-- 随机背景：优先使用腾讯 g.gtimg.cn，移动端禁用 fixed，提高流畅度 -->
+    <script src="/static/js/bg.js" defer></script>
 </head>
 <body>
     <div id="body-wrap">
@@ -31,7 +37,7 @@
                                     src="https://cdn.jsdelivr.net/gh/laoxuai/assert/images/20200125221102.png"
                                     alt="avatar">
                                 <div class="author-info__name">Bucaicai</div>
-                                <div class="author-info__description">00后青年，后端开发者，略懂前端, <s>学生，实习</s>，缺乏社会的毒打</div>
+                                <div class="author-info__description">00后青年，后端开发者，略懂前端, 学生，实习，缺乏社会的毒打</div>
                             </div>
                             <div class="card-info-social-icons is-center">
                                 <a class="social-icon" href="https://github.com/sqdft" target="_blank">
@@ -82,13 +88,14 @@
                 <article id="page">
                     <div class="article-container">   
                 <h2>最新文章</h2>
-                <ul class="blog-list">
+                <ul class="blog-list" id="blog-list">
                 <li class="blog-item pinned">
                     <h3><a href="/blogs/communication-groups.html">我的交流群</a></h3>
                     <p>工具知识交流群:1050444336  欢迎大家进来学习交流，也提供各种实用的小工具</p>
                     
                     <span class="date">2025-08-04</span>
                 </li>
+
                 <li class="blog-item">
                     <h3><a href="/blogs/ai-help.html">
                       最新 AI 工具速览：Grok · Claude · Gemini 2.5 Pro · ChatGPT
@@ -100,18 +107,32 @@
                     <span class="date">2025‑08‑05</span>
                   </li>
 
-
                   <li class="blog-item">
                     <h3>
                       <a href="/blogs/bili-grabber.html" target="_blank" rel="noopener noreferrer">
-                        B站视频下载网页程序 — Node.js 环境部署与使用
+                       B站视频下载网页程序 — Node.js 环境部署与使用
                       </a>
                     </h3>
                     <p>Node.js安装，npm依赖包安装，项目文件下载（百度网盘），最后启动服务说明。</p>
                     <span class="date">2025-08-09</span>
                   </li>
 
+                  <li class="blog-item">
+                    <h3>
+                      <a href="/blogs/cherrystudio.html" rel="noopener noreferrer">
+                        CherryStudio | 免费使用 ChatGPT 与 Gemini 2.5 Pro 等大模型
+                      </a>
+                    </h3>
+                    <p>
+                      教你如何在 CherryStudio 上免费体验多款大模型（ChatGPT、Gemini 2.5 Pro 等），
+                      覆盖入口地址、账号准备、使用技巧与常见问题，零门槛快速上手。
+                    </p>
+                    <span class="date">2025-08-12</span>
+                  </li>
+
                 </ul>
+
+                <nav class="pagination" id="pagination" aria-label="文章分页"></nav>
 
                 <a href="/blogs/index.html" class="more-link">查看全部文章</a>
                     </div>
@@ -125,10 +146,10 @@
         </footer>
     </div>
     <!-- 引入 jQuery 核心库，用于简化 DOM 操作、事件绑定、Ajax 等 -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- 引入 Fancybox 插件（基于 jQuery 的图片/内容弹窗库），可实现点击图片放大、轮播等功能 -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery.fancybox@2.1.5/source/jquery.fancybox.js"></script>
+    <script src="https://cdn.staticfile.org/fancybox/2.1.5/jquery.fancybox.min.js" defer></script>
 
     <!-- 不蒜子网站访问统计（异步加载），用于展示页面浏览量、访客量等 -->
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -137,21 +158,21 @@
     <script src="https://cdn.jsdelivr.net/npm/instant.page@3.0.0/instantpage.js" type="module"></script>
 
     <!-- lazysizes：图片懒加载插件，仅在图片进入视口时才加载，提高性能 -->
-    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" async></script>
+    <script src="https://cdn.staticfile.org/lazysizes/5.2.0/lazysizes.min.js" async></script>
 
 
     <!-- APlayer：网页音频播放器核心脚本，可实现本地音乐播放功能 -->
-    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+    <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" defer></script>
 
     <!-- MetingJS：结合 APlayer 用于加载网易云、QQ 音乐、酷狗等平台的音乐数据 -->
-    <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <script src="https://cdn.staticfile.org/meting/2.0.1/Meting.min.js" defer></script>
     <!-- ===== 一言 & 今日诗词 插件 ===== -->
 
     <!-- 一言（Hitokoto）：每天生成一句文艺短句，填充到页面指定元素（ID 为 #hitokoto） -->
     <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
 
     <!-- 今日诗词：自动获取一首诗词展示在页面，可增加网站文化气息 -->
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8" defer></script>
 
 
     <script type="text/javascript">
@@ -196,10 +217,13 @@
             };
         })(jQuery);
         $(function () {
+            try {
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            } catch (e) {}
             $.fn.snow({
                 minSize: 5, /* 定义雪花最小尺寸 */
-                maxSize: 50,/* 定义雪花最大尺寸 */
-                newOn: 800  /* 定义密集程度，数字越小越密集 */
+                maxSize: 40,/* 降低最大尺寸以减少负载 */
+                newOn: 1600  /* 降低密集程度，提升性能 */
             });
         });
 
@@ -220,6 +244,87 @@
                 }, 2000);
             }
         });
+    </script>
+
+    <script>
+      (function(){
+        var PAGE_SIZE = 10;
+        var list = document.getElementById('blog-list');
+        if(!list) return;
+
+        function parseDate(text){
+          if(!text) return new Date(0);
+          var m = text.match(/(\d{4})\D(\d{1,2})\D(\d{1,2})/);
+          if(!m) return new Date(0);
+          var y = parseInt(m[1],10), mo = parseInt(m[2],10)-1, d = parseInt(m[3],10);
+          return new Date(y, mo, d);
+        }
+
+        var pinned = list.querySelector('li.blog-item.pinned');
+        var allItems = Array.from(list.querySelectorAll('li.blog-item'));
+        var items = allItems.filter(function(li){ return !li.classList.contains('pinned'); });
+
+        // 按日期倒序：最新在前
+        items.sort(function(a,b){
+          var da = parseDate(a.querySelector('.date') && a.querySelector('.date').textContent.trim());
+          var db = parseDate(b.querySelector('.date') && b.querySelector('.date').textContent.trim());
+          return db - da;
+        });
+
+        var currentPage = 1;
+        var totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+
+        function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+        function renderPage(p){
+          currentPage = clamp(p, 1, totalPages);
+          // 清空除置顶外的内容
+          Array.from(list.children).forEach(function(li){ if(!li.classList.contains('pinned')) li.remove(); });
+          // 插回置顶
+          if(pinned && !list.contains(pinned)) list.insertBefore(pinned, list.firstChild);
+          // 计算页内容
+          var start = (currentPage-1)*PAGE_SIZE;
+          var pageItems = items.slice(start, start+PAGE_SIZE);
+          pageItems.forEach(function(li){ list.appendChild(li); });
+          renderPagination();
+          // 更新hash，便于返回
+          try { history.replaceState(null,'', '#page='+currentPage); } catch(e){}
+        }
+
+        function renderPagination(){
+          var pag = document.getElementById('pagination');
+          if(!pag) return;
+          pag.innerHTML = '';
+          if(totalPages <= 1) return; // 一页无需分页
+
+          function btn(label, page, disabled, current){
+            var b = document.createElement('button');
+            b.textContent = label;
+            b.disabled = !!disabled;
+            if(current) { b.setAttribute('aria-current','page'); }
+            b.style.margin = '0 .3em';
+            b.style.padding = '.3em .6em';
+            b.style.borderRadius = '6px';
+            b.style.border = '1px solid #ccc';
+            b.style.background = current ? '#49b1f5' : '#fff';
+            b.style.color = current ? '#fff' : '#333';
+            b.addEventListener('click', function(){ if(!disabled) renderPage(page); });
+            return b;
+          }
+
+          pag.appendChild(btn('上一页', currentPage-1, currentPage===1, false));
+          for(var i=1;i<=totalPages;i++){
+            pag.appendChild(btn(String(i), i, false, i===currentPage));
+          }
+          pag.appendChild(btn('下一页', currentPage+1, currentPage===totalPages, false));
+        }
+
+        // 初始页来自 hash（如 #page=2）
+        var hash = location.hash || '';
+        var m = hash.match(/page=(\d+)/);
+        var initPage = m ? parseInt(m[1],10) : 1;
+        renderPage(initPage);
+      })();
     </script>
 
   

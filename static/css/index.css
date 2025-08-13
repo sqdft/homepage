@@ -1,8 +1,32 @@
-﻿* {
+* {
     box-sizing: border-box;
 }
 html {
     height: 100%;
+}
+
+/* 全局透明度变量（可被页面内 :root 覆盖） */
+:root {
+  /* 变量与页面/位置映射说明：
+     --glass-alpha-container → .article-container / .card-widget
+       示例页面：blogs/ai-help.html、blogs/cherrystudio.html、blogs/bili-grabber.html、blogs/index.html
+     --glass-alpha-page      → #page
+       示例页面：首页 index.html 的主内容区域（若其他页面存在 #page，同样受控）
+     --glass-alpha-aside     → #aside_content .card-widget（侧栏卡片：作者信息/公告/站点信息等）
+       示例页面：首页 index.html
+     --glass-alpha-list      → .blog-item（“最新文章”列表条目）
+       示例页面：首页 index.html
+     --glass-alpha-list-hover→ .blog-item:hover（列表条目悬停态）
+       示例页面：首页 index.html
+     --glass-alpha-card      → .blog-card（博客列表卡片，内联样式里）
+       示例页面：博客列表页 blogs/index.html
+  */
+  --glass-alpha-container: 0.5;
+  --glass-alpha-page: 0.24;
+  --glass-alpha-aside: 0.22;
+  --glass-alpha-list: 0.30;
+  --glass-alpha-list-hover: 0.42;
+  --glass-alpha-card: 0.30;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -330,12 +354,14 @@ aside_content .card-info .author-info__description {
 
 
 .article-container, .card-widget {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
+  /* 使用 CSS 变量控制不透明度，页面可覆盖 --glass-alpha-container */
+  background: rgba(255, 255, 255, var(--glass-alpha-container, 0.24));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   padding: 1em;
   border-radius: 12px;
   margin-bottom: 1em;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.16);
 }
 
 .blog-list {
@@ -435,49 +461,55 @@ aside_content .card-info .author-info__description {
     line-height: 2;
     font-family: '微软雅黑', Lato, Helvetica Neue, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
     color: #333;
-    background: url('../img/img1.webp') no-repeat center center fixed;
+    /* 背景图片由 /static/js/bg.js 动态设置，避免重复加载 */
+    /* background: url('../img/img1.webp') no-repeat center center fixed; */
     /* background-color: red; */
-    background-size: cover;
+    /* background-size: cover; */
 }
 
 
 /* 半透明毛玻璃效果：主要内容区域（文章） */
-#page {
+  #page {
     margin-top: 10px;
     width: 75%;
     padding: 20px 44px 44px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.5); /* 半透明白色 */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    /* 使用 CSS 变量控制不透明度，页面可覆盖 --glass-alpha-page */
+    background: rgba(255, 255, 255, var(--glass-alpha-page, 0.24));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
   }
   
   /* 半透明毛玻璃效果：侧边卡片（作者信息、公告、站点信息等） */
   #aside_content .card-widget {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(14px);
+    /* 使用 CSS 变量控制不透明度，页面可覆盖 --glass-alpha-aside */
+    background: rgba(255, 255, 255, var(--glass-alpha-aside, 0.22));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     transition: all 0.3s;
   }
   
   /* 半透明毛玻璃效果：每篇博客文章列表 */
   .blog-item {
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    /* 使用 CSS 变量控制不透明度，页面可覆盖 --glass-alpha-list */
+    background-color: rgba(255, 255, 255, var(--glass-alpha-list, 0.30));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-left: 4px solid #ccc;
     padding: 1em 1.2em;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
   }
   
   .blog-item:hover {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, var(--glass-alpha-list-hover, 0.42));
     transform: translateY(-2px);
   }
+
+/* 移除文字阴影，保持文本清晰锐利，避免视觉疲劳 */
   

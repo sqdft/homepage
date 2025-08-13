@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <title>我的博客</title>
-  <link rel="stylesheet" href="../static/css/index.css" />
+  <link rel="dns-prefetch" href="//g.gtimg.cn">
+  <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
+  <link rel="stylesheet" href="/static/css/index.css" />
+  <script src="/static/js/bg.js" defer></script>
   <style>
     body {
       font-family: '微软雅黑', sans-serif;
-      background: #fff;
       color: #333;
       margin: 0;
       padding: 2em;
@@ -24,8 +26,10 @@
     .blog-card {
       padding: 1.5em;
       border-radius: 14px;
-      background: #f9f9f9;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      background: rgba(255,255,255,var(--glass-alpha-card, 0.30));
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -63,7 +67,17 @@
   </style>
 </head>
 <body>
+  <div class="article-container">
   <div class="blog-container">
+    <div class="blog-card">
+      <div class="blog-title">CherryStudio | 免费使用 ChatGPT 与 Gemini 2.5 Pro 等大模型</div>
+      <div class="blog-date">2025-08-12</div>
+      <div class="blog-summary">
+        教你如何在 CherryStudio 上免费体验多款大模型（ChatGPT、Gemini 2.5 Pro 等），覆盖入口地址、账号准备、使用技巧与常见问题，零门槛快速上手。
+      </div>
+      <a class="read-more" href="cherrystudio.html">阅读全文 →</a>
+    </div>
+
     <div class="blog-card">
       <div class="blog-title">欢迎加入我的AI工具交流群</div>
       <div class="blog-date">2025-08-04</div>
@@ -90,6 +104,7 @@
       </div>
       <a class="read-more" href="bili-grabber.html">阅读全文 →</a>
     </div>
+  </div>
   </div>
 </body>
 </html>
