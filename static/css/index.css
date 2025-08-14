@@ -4,6 +4,9 @@
 html {
     height: 100%;
 }
+body {
+    min-height: 100%;
+}
 
 /* 全局透明度变量（可被页面内 :root 覆盖） */
 :root {
@@ -311,6 +314,12 @@ aside_content .card-info .author-info__description {
     #page {
         margin: 0;
         padding: 1.8rem 1.3rem;
+        /* 使用玻璃态半透明，避免遮挡移动端背景平铺 */
+        background: rgba(255, 255, 255, var(--glass-alpha-page, 0.24));
+    }
+    /* 侧栏卡片在移动端也保持半透明以露出背景 */
+    #aside_content .card-widget {
+        background: rgba(255, 255, 255, var(--glass-alpha-aside, 0.22));
     }
 }
 
