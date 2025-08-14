@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>科学上网完整指南：环境配置与工具推荐</title>
+  <link rel="dns-prefetch" href="//g.gtimg.cn">
+  <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
+  <link rel="stylesheet" href="/static/css/index.css">
+  <script src="/static/js/bg.js" defer></script>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
+    h1 { color: #333; text-align: center; margin-bottom: 10px; }
+    p { color: #555; font-size: 16px; }
+    h2 { color: #1e88e5; margin-top: 26px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .group-info { margin-top: 30px; padding: 15px; background-color: #e3f2fd; border-left: 5px solid #1e88e5; }
+    .back-links { margin-top: 20px; }
+    .back-links a { color: #007aff; text-decoration: none; margin-right: 12px; }
+    .back-links a:hover { text-decoration: underline; }
+    .btn-primary { display: inline-block; padding: 10px 20px; margin-top: 16px; background-color: #1e88e5; color: #fff; text-decoration: none; border-radius: 6px; }
+    .btn-primary:hover { background-color: #1565c0; }
+  </style>
+</head>
+<body>
+  <div class="article-container">
+    <h1>科学上网完整指南</h1>
+    <p>
+      本文汇总科学上网的基本概念、环境配置步骤与常见工具，帮助你快速完成从 0 到 1 的搭建。
+      配置材料与订阅可以在<strong>工具交流群</strong>中获取，适合 Windows / macOS / Android / iOS 等平台。
+    </p>
+
+    <h2>⚠️ 合规与前置说明</h2>
+    <ul>
+      <li>请遵守当地法律法规，仅用于学习、科研和合规访问。</li>
+      <li>谨慎保管个人账号与订阅链接，不要公开分享。</li>
+      <li>如访问速度不理想，可尝试更换节点、协议或切换网络（WIFI/蜂窝）。</li>
+    </ul>
+
+    <h2>📚 基本术语</h2>
+    <ul>
+      <li><strong>订阅（Subscription）</strong>：包含多个节点配置的链接或文件，导入客户端即可使用。</li>
+      <li><strong>节点</strong>：实际的代理服务器，国家/线路不同速度也不同。</li>
+      <li><strong>系统代理</strong>：让全局应用流量都经过客户端（或设置分应用/分域名规则）。</li>
+    </ul>
+
+    <h2>🖥️ Windows / macOS</h2>
+    <ul>
+      <li><strong>推荐客户端</strong>：Clash Verge Rev、SagerNet 桌面版、Sing-Box GUI。</li>
+      <li><strong>步骤</strong>：
+        <ol>
+          <li>下载安装客户端。</li>
+          <li>在“订阅/配置”处粘贴你的订阅链接或导入订阅文件。</li>
+          <li>更新订阅，选择延迟更低的节点（可测速）。</li>
+          <li>开启系统代理（或规则模式），浏览器与应用即可走代理。</li>
+        </ol>
+      </li>
+      <li><strong>常见问题</strong>：证书安装失败、端口占用（更换本地端口）、公司/校园网络限制（尝试不同协议或开启混淆）。</li>
+    </ul>
+
+    <h2>📱 Android</h2>
+    <ul>
+      <li><strong>推荐客户端</strong>：Surfboard、Clash Meta for Android、SagerNet。</li>
+      <li><strong>步骤</strong>：安装 → 导入订阅 → 选择节点 → 开启“代理开关”。</li>
+      <li><strong>技巧</strong>：
+        <ul>
+          <li>分应用代理：仅让指定 App 走代理，降低耗电与流量。</li>
+          <li>分流规则：常见国内域名直连，海外域名走代理。</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>🍎 iOS / iPadOS</h2>
+    <ul>
+      <li><strong>常用客户端</strong>：Shadowrocket、Loon、Quantumult X（需使用支持的地区账号）。</li>
+      <li><strong>步骤</strong>：App Store 安装 → 粘贴订阅 → 更新 → 选节点 → 打开“连接”。</li>
+      <li><strong>提示</strong>：如账号地区限制，可在交流群了解合规获取方式与注意事项。</li>
+    </ul>
+
+    <h2>🚀 测速与优化</h2>
+    <ul>
+      <li>客户端内置测速：延迟（ms）、下载/上传速度。</li>
+      <li>选择同运营商/同地区线路通常更稳。</li>
+      <li>网络不稳时：切换节点协议（如 Hysteria / Reality / VLESS / Trojan 等）、更换 DNS、或重启路由器。</li>
+    </ul>
+
+    <h2>🧰 工具清单（可在交流群获取）</h2>
+    <ul>
+      <li>桌面：Clash Verge Rev / Sing-Box GUI / V2RayN（传统）</li>
+      <li>移动：Surfboard / Clash Meta for Android / Shadowrocket</li>
+      <li>辅助：测速站（speedtest / fast）、DNS 工具（NextDNS / AdGuard）</li>
+    </ul>
+
+    <div class="group-info">
+      <p><strong>交流群号：</strong>1050444336</p>
+      <p>群里提供常用客户端、订阅导入教程与注意事项，欢迎新手提问、交流实战经验。</p>
+      <a href="https://qm.qq.com/q/MBy8km4u4i" target="_blank" rel="noopener" class="btn-primary">立即加入工具交流群</a>
+    </div>
+
+    <div class="back-links">
+      <a href="/blogs/index.html">返回文章列表</a>
+      <a href="/index.html">返回首页</a>
+    </div>
+  </div>
+</body>
+</html>
