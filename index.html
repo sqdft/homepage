@@ -24,6 +24,8 @@
     </script>
     <!-- 随机背景：优先使用腾讯 g.gtimg.cn，移动端禁用 fixed，提高流畅度 -->
     <script src="/static/js/bg.js" defer></script>
+    <script>window.COMMENTS_API = 'https://blogbackend-sp78.onrender.com';</script>
+    <script src="/static/js/comments.js" defer></script>
 </head>
 <body>
     <div id="body-wrap">
@@ -155,6 +157,10 @@
                 <nav class="pagination" id="pagination" aria-label="文章分页"></nav>
 
                 <a href="/blogs/index.html" class="more-link">查看全部文章</a>
+                <section id="comments-section">
+                  <h2>留言板</h2>
+                  <div id="comments-root"></div>
+                </section>
                     </div>
                 </article>
             </div>
