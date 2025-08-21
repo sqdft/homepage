@@ -64,11 +64,50 @@
     .read-more:hover {
       text-decoration: underline;
     }
+
+    /* 返回首页按钮（玻璃拟态，顶部右侧，移动端友好） */
+    .back-home {
+      position: sticky;
+      top: 12px;
+      display: flex;
+      justify-content: flex-end;
+      max-width: 800px;
+      margin: 0 auto 1em;
+      z-index: 10;
+    }
+    .back-home a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, var(--glass-alpha-card, 0.35));
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: #0b6cff;
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .back-home a:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
   </style>
 </head>
 <body>
   <div class="article-container">
+  <div class="back-home">
+    <a href="/index.html" aria-label="返回首页">🏠 返回首页</a>
+  </div>
   <div class="blog-container">
+    <div class="blog-card">
+      <div class="blog-title">即梦AI：无限使用创作功能指南（稳定长时输出）</div>
+      <div class="blog-date">2025-08-21</div>
+      <div class="blog-summary">
+        聚焦“无限使用”与稳定长时输出的实操方案与避坑建议，支持批量化创作；可联系群主获取进阶模板。
+      </div>
+      <a class="read-more" href="jimeng-ai.html">阅读全文 →</a>
+    </div>
     <div class="blog-card">
       <div class="blog-title">Sealos 云：每月 $5 免费额度 + 数据库，按需可升至 6核8G</div>
       <div class="blog-date">2025-08-21</div>
