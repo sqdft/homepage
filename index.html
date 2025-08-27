@@ -14,10 +14,13 @@
     <link rel="dns-prefetch" href="//cdn.staticfile.org">
     <link rel="dns-prefetch" href="//g.gtimg.cn">
     <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
+    <!-- 预连接 Apple 预览音频与评论服务，加速首包握手 -->
+    <link rel="dns-prefetch" href="//audio-ssl.itunes.apple.com">
+    <link rel="preconnect" href="https://audio-ssl.itunes.apple.com" crossorigin>
+    <link rel="preconnect" href="https://blogbackend-sp78.onrender.com" crossorigin>
     <link rel="stylesheet" href="static/css/index.css">
     <!-- 移除 APlayer 样式，改用自定义播放器 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/2.1.5/jquery.fancybox.min.css">
     <script type="text/javascript">
         if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
             alert('朋友，上古浏览器不支持呢~');
@@ -36,7 +39,7 @@
                     <div class="card-widget card-info">
                         <div class="card-content">
                             <div class="card-info-avatar is-center">
-                                <img class="avatar-img"
+                                <img class="avatar-img" loading="lazy" decoding="async"
                                     src="https://cdn.jsdelivr.net/gh/laoxuai/assert/images/20200125221102.png"
                                     alt="avatar">
                                 <div class="author-info__name">xiaoyang老师</div>
@@ -205,8 +208,7 @@
     <!-- 引入 jQuery 核心库，用于简化 DOM 操作、事件绑定、Ajax 等 -->
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
 
-    <!-- 引入 Fancybox 插件（基于 jQuery 的图片/内容弹窗库），可实现点击图片放大、轮播等功能 -->
-    <script src="https://cdn.staticfile.org/fancybox/2.1.5/jquery.fancybox.min.js" defer></script>
+    <!-- 首页未使用 Fancybox，已移除以减少体积 -->
 
     <!-- 不蒜子网站访问统计（异步加载），用于展示页面浏览量、访客量等 -->
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -272,12 +274,21 @@
         $(function () {
             try {
                 if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                // 触控/移动设备默认关闭以节省资源
+                if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
             } catch (e) {}
-            $.fn.snow({
-                minSize: 5, /* 定义雪花最小尺寸 */
-                maxSize: 40,/* 降低最大尺寸以减少负载 */
-                newOn: 1600  /* 降低密集程度，提升性能 */
-            });
+            function startSnow(){
+                $.fn.snow({
+                    minSize: 5,
+                    maxSize: 32,
+                    newOn: 2400
+                });
+            }
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(startSnow, { timeout: 3000 });
+            } else {
+                setTimeout(startSnow, 1500);
+            }
         });
 
         // 浏览器搞笑标题

@@ -13,6 +13,19 @@
   function el(tag, cls){ var n=document.createElement(tag); if(cls) n.className=cls; return n; }
   function clamp(x, a, b){ return Math.max(a, Math.min(b, x)); }
   function fmtTime(sec){ sec=Math.max(0, sec|0); var m=(sec/60|0); var s=(sec%60|0); return (m<10?'0':'')+m+":"+(s<10?'0':'')+s; }
+  // 根据条目构造音频源优先级列表：优先 item.srcs（可填国内源），最后回退到 item.url
+  function buildSrcList(item){
+    var arr = [];
+    try{
+      if(item && Array.isArray(item.srcs)){
+        item.srcs.forEach(function(s){ if(typeof s==='string' && s.trim()){ arr.push(s.trim()); } });
+      }
+      if(item && typeof item.url === 'string'){
+        var u = item.url.trim(); if(u && arr.indexOf(u)===-1){ arr.push(u); }
+      }
+    }catch(_){ }
+    return arr;
+  }
   function parseLrc(text){
     // 返回按时间排序的 {t, txt} 数组
     var lines = (text||'').split(/\r?\n/);
@@ -43,6 +56,22 @@
       a.addEventListener('loadedmetadata', done);
       a.addEventListener('error', done);
     });
+  }
+  // 若文本疑似为百分号编码（%E3%81%AA 等），尝试安全解码
+  function maybePercentDecodeText(s){
+    if(s==null || s==='') return s;
+    try {
+      var m = String(s).match(/%[0-9A-Fa-f]{2}/g);
+      if(m && m.length >= 2){
+        try { return decodeURIComponent(s); } catch(e){
+          // 逐段解码：对连续 %xx 串尝试单独解码，失败保留原样
+          return String(s).replace(/(?:%[0-9A-Fa-f]{2})+/g, function(seg){
+            try { return decodeURIComponent(seg); } catch(_) { return seg; }
+          });
+        }
+      }
+    } catch(_){ }
+    return s;
   }
   function buildPseudoTimedLrc(plainText, duration){
     // 将无时间戳歌词根据“行权重”分配到整曲时长
@@ -88,6 +117,8 @@
   var state = {
     idx: 0,
     lrcMap: {}, // key: idx -> [{t, txt}]
+    srcList: [], // 当前曲目的源列表（优先国内）
+    srcIndex: 0, // 正在使用的源索引
   };
   function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v==null? d: JSON.parse(v);}catch(e){return d;} }
   function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
@@ -155,7 +186,7 @@
 
   // -------- audio --------
   var audio = new Audio();
-  audio.preload = 'auto';
+  audio.preload = 'metadata';
   // 暴露到 window，便于控制台直接测试：_mpAudio.currentTime=20
   try{ window._mpAudio = audio; window._mpUI = ui; }catch(e){}
   // 若在元数据尚未加载时发生拖拽/点击，记录待应用的 seek 比例
@@ -164,6 +195,19 @@
   var pendingStartTime = null;
   // 当用户交互而 duration 未知时，为取回 metadata 临时播放一次，随后恢复暂停
   var needPauseAfterMeta = false;
+  // 歌词延后加载控制，防止在不可播放或切歌竞态下提前渲染
+  var lastLoadedLyricsIdx = -1;
+  var lastLoadedSrc = '';
+
+  function setAudioToCurrent(){
+    var src = state.srcList[state.srcIndex] || '';
+    audio.src = encodeURI(src||'');
+    try{ audio.load(); }catch(e){}
+    // 切换源时，保持歌词区域清空，等待 canplay 再决定是否加载
+    ui.lrcInner.innerHTML = '';
+    lastLoadedLyricsIdx = -1;
+    try{ lastLoadedSrc = audio.src; }catch(_){ lastLoadedSrc=''; }
+  }
 
   function updateDurationUI(){
     var dur = audio.duration;
@@ -230,10 +274,36 @@
   });
   audio.addEventListener('durationchange', function(){ updateDurationUI(); maybeApplyPending('durationchange'); if(DEBUG_SEEK){ console.log('[durationchange]', audio.duration); } });
   audio.addEventListener('loadeddata', function(){ updateDurationUI(); maybeApplyPending('loadeddata'); if(DEBUG_SEEK){ console.log('[loadeddata]'); } });
-  audio.addEventListener('canplay', function(){ updateDurationUI(); maybeApplyPending('canplay'); if(DEBUG_SEEK){ console.log('[canplay]'); } });
+  audio.addEventListener('canplay', function(){ 
+    updateDurationUI(); 
+    maybeApplyPending('canplay'); 
+    // 仅在当前音频可播放后再加载歌词，且只加载一次，避免切歌竞态
+    try{
+      if(lastLoadedLyricsIdx !== state.idx && audio.currentSrc === lastLoadedSrc){
+        loadLyricsFor(state.idx).then(function(){ syncLyrics(); });
+        lastLoadedLyricsIdx = state.idx;
+      }
+    }catch(_){ }
+    if(DEBUG_SEEK){ console.log('[canplay]'); }
+  });
   audio.addEventListener('canplaythrough', function(){ updateDurationUI(); maybeApplyPending('canplaythrough'); if(DEBUG_SEEK){ console.log('[canplaythrough]'); } });
   audio.addEventListener('progress', function(){ maybeApplyPending('progress'); });
-  audio.addEventListener('error', function(e){ console.error('[audio:error]', audio.error || e, 'src=', audio.currentSrc); });
+  audio.addEventListener('error', function(e){ 
+    console.error('[audio:error]', audio.error || e, 'src=', audio.currentSrc);
+    // 若存在备选源，自动尝试下一源
+    try{
+      if(state.srcList && state.srcIndex < state.srcList.length - 1){
+        state.srcIndex++;
+        if(DEBUG_SEEK){ console.warn('[audio:error] fallback to source#'+state.srcIndex, state.srcList[state.srcIndex]); }
+        setAudioToCurrent();
+        audio.play().catch(function(){});
+        return;
+      }
+    }catch(_){ }
+    // 无可用备选源：不展示任何歌词
+    try{ state.lrcMap[state.idx] = []; }catch(_){ }
+    try{ ui.lrcInner.innerHTML = ''; }catch(_){ }
+  });
   audio.addEventListener('ended', function(){ next(); });
   audio.volume = state.vol;
   ui.volInner.style.width = (state.vol*100).toFixed(2)+'%';
@@ -360,6 +430,11 @@
     ui.lrcInner.innerHTML = '';
     arr.forEach(function(item){ var p = el('p'); p.textContent=item.txt||''; ui.lrcInner.appendChild(p); });
   }
+  function renderPlainLyrics(text){
+    ui.lrcInner.innerHTML = '';
+    var lines = String(text||'').split(/\r?\n/);
+    lines.forEach(function(line){ var p = el('p'); p.textContent = line; ui.lrcInner.appendChild(p); });
+  }
   function syncLyrics(){
     var arr = state.lrcMap[state.idx]; if(!arr || arr.length===0) return;
     var t = audio.currentTime||0;
@@ -374,13 +449,12 @@
   function loadLyricsFor(index){
     var item = window.PLAYLIST[index]; if(!item || !item.lrc){ state.lrcMap[index]=[]; renderLyrics([]); return Promise.resolve(); }
     return fetchText(item.lrc).then(function(txt){
-      if(hasTimestamp(txt)){
-        var arr = parseLrc(txt); state.lrcMap[index]=arr; renderLyrics(arr); return; }
-      // 无时间戳 -> 等待拿到时长再生成
-      var ensureDur = isFinite(audio.duration) && audio.duration>0 ? Promise.resolve(audio.duration) : loadAudioDuration(item.url);
-      return ensureDur.then(function(dur){
-        var gen = buildPseudoTimedLrc(txt, dur||0); var arr = parseLrc(gen); state.lrcMap[index]=arr; renderLyrics(arr);
-      });
+      var raw = maybePercentDecodeText(txt);
+      if(hasTimestamp(raw)){
+        var arr = parseLrc(raw); state.lrcMap[index]=arr; renderLyrics(arr); return; }
+      // 无时间戳：不再生成伪时间轴，直接静态展示
+      state.lrcMap[index]=[];
+      renderPlainLyrics(raw);
     }).catch(function(){ state.lrcMap[index]=[]; renderLyrics([]); });
   }
 
@@ -404,8 +478,10 @@
     ui.cover.src = item.cover || '/static/img/img1.png';
     // 切歌时清理探测播放标志，避免上一次交互未完成导致新歌在 metadata 到达后被意外暂停
     needPauseAfterMeta = false;
-    audio.src = encodeURI(item.url||'');
-    try{ audio.load(); }catch(e){}
+    // 构建源列表（优先国内 srcs，回退 url），并设置当前源
+    state.srcList = buildSrcList(item);
+    state.srcIndex = 0;
+    setAudioToCurrent();
 
     // 恢复进度：等待 metadata 就绪后再应用，避免早期赋值被忽略
     var saved = parseInt(lsGet('music_pos_'+i, 0),10)||0;
@@ -420,8 +496,7 @@
       if(Date.now() - t0 > 6000){ clearInterval(maybeApplyPending._tmr); }
     }, 200);
 
-    // 加载歌词
-    loadLyricsFor(i).then(function(){ syncLyrics(); });
+    // 歌词将于 canplay 时按需加载
 
     if(autoPlay){ audio.play().catch(function(){}); setPauseIcon(); }
     else { setPlayIcon(); }
@@ -430,8 +505,16 @@
   function highlightListItem(i){
     qsa('.mp-list li', ui.card).forEach(function(li, idx){ li.classList.toggle('on', idx===i); });
   }
-  function prev(){ switchTo(state.idx-1, true); }
-  function next(){ switchTo(state.idx+1, true); }
+  function prev(){
+    var n = state.idx - 1;
+    if(n < 0) n = window.PLAYLIST.length - 1;
+    switchTo(n, true);
+  }
+  function next(){
+    var n = state.idx + 1;
+    if(n >= window.PLAYLIST.length) n = 0;
+    switchTo(n, true);
+  }
   function toggle(){ if(audio.paused){ audio.play().catch(function(){}); setPauseIcon(); } else { audio.pause(); setPlayIcon(); } }
   // 设置按钮为“播放(▶️)”或“暂停(⏸)”图标
   function setPlayIcon(){ ui.btnPlay.textContent = '▶️'; }

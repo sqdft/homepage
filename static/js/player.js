@@ -34,6 +34,23 @@
     return String(s).replace(/[&<>]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]); });
   }
 
+  // 若文本疑似为百分号编码（%E3%81%AA 等），尝试安全解码
+  function maybePercentDecodeText(s){
+    if(s==null || s==='') return s;
+    try {
+      var m = String(s).match(/%[0-9A-Fa-f]{2}/g);
+      if(m && m.length >= 2){
+        try { return decodeURIComponent(s); } catch(e){
+          // 逐段解码：对连续 %xx 串尝试单独解码，失败保留原样
+          return String(s).replace(/(?:%[0-9A-Fa-f]{2})+/g, function(seg){
+            try { return decodeURIComponent(seg); } catch(_) { return seg; }
+          });
+        }
+      }
+    } catch(_){}
+    return s;
+  }
+
   // DOM 兼容方法：matches / closest
   function domMatches(el, selector){
     if(!el || el.nodeType !== 1) return false;
@@ -82,7 +99,7 @@
     fetch(encodeSrc(u)).then(function(res){
       if(res.ok) return res.text();
       throw new Error('not ok');
-    }).then(function(txt){ onText && onText(txt); })
+    }).then(function(txt){ onText && onText(txt, u); })
       .catch(function(){ tryFetchLRC(urls, onText, onFail); });
   }
 
@@ -242,16 +259,21 @@
       } catch(_){}
     }
     if(candidates.length){
-      tryFetchLRC(candidates.slice(), function(txt){
-        var parsed = parseLRC(txt);
+      tryFetchLRC(candidates.slice(), function(txt, usedUrl){
+        // 对 data:text 或疑似百分号编码的内容做一次安全解码
+        var raw = txt;
+        try { if(usedUrl && /^data:text\/(?:plain|lrc)/i.test(usedUrl)) raw = maybePercentDecodeText(raw); } catch(_){}
+        raw = maybePercentDecodeText(raw);
+
+        var parsed = parseLRC(raw);
         if(parsed && parsed.length){
           self.lrcLines = parsed; self.lrcPlain = false; self._plainLyricRaw = ''; self.renderLyrics();
         } else {
           self.lrcLines = [];
           self.lrcPlain = true;
-          self._plainLyricRaw = txt || '';
+          self._plainLyricRaw = raw || '';
           if(self.$lyrics){
-            var safe = escapeHTML(txt||'');
+            var safe = escapeHTML(raw||'');
             self.$lyrics.innerHTML = '<div class="lrc-plain">'+ safe.replace(/\r?\n/g, '<br>') +'</div>';
           }
         }
@@ -270,22 +292,6 @@
       if(lastTime && lastTime < (self.audio.duration || 0)){
         try { self.audio.currentTime = lastTime; } catch(e){}
       }
-      // 若是纯文本歌词，可在拿到时长后按行等分生成伪时间轴，实现实时高亮（可接受的近似方案）
-      try {
-        if(self.lrcPlain && self._plainLyricRaw){
-          var dur = self.audio.duration || 0;
-          if(isFinite(dur) && dur > 0){
-            var lines = self._plainLyricRaw.split(/\r?\n/).map(function(s){ return (s||'').trim(); })
-              .filter(function(s){ return s && !/^\[.*\]$/.test(s); });
-            if(lines.length >= 3){
-              var step = dur / lines.length;
-              self.lrcLines = lines.map(function(text, i){ return { time: i*step, text: text }; });
-              self.lrcPlain = false; // 切换为时间轴模式以启用高亮与点击跳转
-              self.renderLyrics();
-            }
-          }
-        }
-      } catch(_){}
       self.audio.removeEventListener('loadedmetadata', onMeta);
     };
     this.audio.addEventListener('loadedmetadata', onMeta);
@@ -357,19 +363,8 @@
 
   Player.prototype.updateLyrics = function(ct){
     if(!this.$lyrics) return;
-    // 纯文本歌词：按歌曲时长平滑滚动
-    if(this.lrcPlain){
-      var dur = this.audio.duration || 0;
-      if(!(isFinite(dur) && dur > 0)) return;
-      var plain = this.$lyrics.querySelector('.lrc-plain');
-      if(!plain) return;
-      var box = plain; // 容器本身滚动
-      var ratio = Math.max(0, Math.min(1, ct / dur));
-      var maxScroll = Math.max(0, box.scrollHeight - box.clientHeight);
-      var dest = Math.floor(maxScroll * ratio);
-      try { box.scrollTop = dest; } catch(e){}
-      return;
-    }
+    // 纯文本歌词：不进行时间同步，仅静态展示
+    if(this.lrcPlain){ return; }
 
     // 带时间轴歌词：按时间高亮并滚动居中
     if(!this.lrcLines.length) return;
