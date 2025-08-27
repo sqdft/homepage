@@ -15,6 +15,7 @@
     <link rel="dns-prefetch" href="//g.gtimg.cn">
     <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
     <link rel="stylesheet" href="static/css/index.css">
+    <!-- 移除 APlayer 样式，改用自定义播放器 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/2.1.5/jquery.fancybox.min.css">
     <script type="text/javascript">
@@ -217,11 +218,7 @@
     <script src="https://cdn.staticfile.org/lazysizes/5.2.0/lazysizes.min.js" async></script>
 
 
-    <!-- APlayer：网页音频播放器核心脚本，可实现本地音乐播放功能 -->
-    <script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" defer></script>
-
-    <!-- MetingJS：结合 APlayer 用于加载网易云、QQ 音乐、酷狗等平台的音乐数据 -->
-    <script src="https://cdn.staticfile.org/meting/2.0.1/Meting.min.js" defer></script>
+    <!-- 已移除 APlayer 与 Meting，使用自定义播放器脚本 -->
     <!-- ===== 一言 & 今日诗词 插件 ===== -->
 
     <!-- 一言（Hitokoto）：每天生成一句文艺短句，填充到页面指定元素（ID 为 #hitokoto） -->
@@ -382,8 +379,10 @@
         renderPage(initPage);
       })();
     </script>
+    <!-- 播放列表配置 -->
+    <script src="/static/js/player.config.js" defer></script>
+    <!-- 自定义侧栏音乐播放器（含拖拽/歌词伪时间轴） -->
+    <script src="/static/js/sidebar-player.js" defer></script>
 
-  
-    
-</body>
-</html>
+  </body>
+  </html>

@@ -10,9 +10,8 @@
 - [x] [Fancybox 图片灯箱](https://github.com/fancyapps/fancyBox)
 - [x] [instant.page 预加载](https://instant.page/)
 - [x] [lazysizes 图片懒加载](https://github.com/aFarkas/lazysizes)
-- [x] [APlayer 音乐播放插件](https://github.com/MoePlayer/APlayer)
-- [x] [MetingJS](https://github.com/metowolf/MetingJS)
 - [x] [不蒜子计数](http://busuanzi.ibruce.info/)
+- [x] 自研侧栏音乐播放器（player.config.js + sidebar-player.js）
 
 ## 集成API
 
@@ -29,8 +28,8 @@
 ## 本地预览
 
 - 依赖：Python 3
-- 启动：`python -m http.server 8083`
-- 访问：`http://127.0.0.1:8083`
+- 启动：`python -m http.server 5500`
+- 访问：`http://127.0.0.1:5500`
 
 ## 目录结构
 
@@ -39,6 +38,9 @@
 - `static/css/index.css`：站点样式（含玻璃拟态变量）
 - `static/js/bg.js`：随机背景（移动端/桌面区分策略）
 - `static/js/comments.js`：留言板前端逻辑
+- `static/js/player.config.js`：自研音乐播放器播放列表配置（定义 `window.PLAYLIST`）
+- `static/js/sidebar-player.js`：侧栏音乐播放器（玻璃态、拖拽进度/音量、伪时间轴歌词）
+- `static/js/player.js`：无侧栏页面可选的底部迷你栏实现（部分页面如 `blogs/index.html` 使用）
 
 ## 新增文章
 
