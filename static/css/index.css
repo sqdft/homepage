@@ -716,5 +716,46 @@ aside_content .card-info .author-info__description {
 #music-card .mp-vol-inner { height: 100%; width: 0%; background: linear-gradient(90deg, #49b1f5, #4db8ff); border-radius: 6px; pointer-events: none; }
 
 @media screen and (max-width: 600px){
-  #music-card .mp-cover { width: 64px; height: 64px; }
+#music-card .mp-cover { width: 64px; height: 64px; }
+}
+
+/* ===== 顶部导航（玻璃态，移动端折叠） ===== */
+.site-header { position: sticky; top: 0; z-index: 1000; padding: 8px 0; }
+.site-header .nav-inner {
+max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;
+padding: 10px 14px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+background: rgba(255,255,255, var(--glass-alpha-card, 0.35));
+-webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.site-header .brand { font-weight: 700; color: #0b6cff; text-decoration: none; }
+.site-header .site-nav { display: flex; gap: 12px; align-items: center; }
+.site-header .site-nav a {
+color: #344c67; text-decoration: none; padding: 6px 10px; border-radius: 8px; transition: background .2s, color .2s;
+}
+.site-header .site-nav a:hover { background: rgba(73,177,245,0.15); color: #0a62a5; }
+
+/* 汉堡按钮（默认隐藏，移动端显示） */
+.site-header .nav-toggle { display: none; }
+.site-header .nav-toggle-btn { display: none; width: 36px; height: 32px; border-radius: 8px; cursor: pointer; position: relative; }
+.site-header .nav-toggle-btn span,
+.site-header .nav-toggle-btn span::before,
+.site-header .nav-toggle-btn span::after {
+position: absolute; left: 8px; right: 8px; height: 2px; background: #344c67; content: ""; transition: transform .2s ease, opacity .2s ease; top: 50%;
+}
+.site-header .nav-toggle-btn span::before { transform: translateY(-8px); }
+.site-header .nav-toggle-btn span::after { transform: translateY(8px); }
+
+/* 移动端：折叠菜单 */
+@media (max-width: 768px){
+.site-header .site-nav { display: none; position: absolute; right: 12px; left: 12px; top: 58px; flex-direction: column; gap: 8px; padding: 10px; border-radius: 10px;
+background: rgba(255,255,255, var(--glass-alpha-card, 0.45));
+-webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.site-header .nav-toggle-btn { display: inline-block; background: rgba(255,255,255,0.8); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+/* 复选框选中 → 展开导航 */
+.site-header .nav-toggle:checked + .nav-toggle-btn + .site-nav { display: flex; }
+/* 选中时汉堡动画为 X */
+.site-header .nav-toggle:checked + .nav-toggle-btn span { background: transparent; }
+.site-header .nav-toggle:checked + .nav-toggle-btn span::before { transform: rotate(45deg); }
+.site-header .nav-toggle:checked + .nav-toggle-btn span::after { transform: rotate(-45deg); }
 }
