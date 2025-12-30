@@ -182,8 +182,8 @@
       statusEl.textContent = '';
       try{
         // 利用一个“不会成功删除”的请求来校验权限：
-        // 授权正确 → 404 Comment not found；未授权 → 401 Invalid token
-        const res = await fetch(`${API_BASE}/api/comments/0`, { method: 'DELETE', headers: { Authorization: 'Bearer ' + t } });
+        // 授权正确 → 404 (ID不存在) 或 200 (删除成功)；未授权 → 401
+        const res = await fetch(`${API_BASE}/api/comments?id=0`, { method: 'DELETE', headers: { Authorization: 'Bearer ' + t } });
         if(res.status === 404){
           VERIFIED = true;
           statusEl.textContent = '';
@@ -222,7 +222,7 @@
     if(!VERIFIED){ alert('口令未通过验证，无法删除'); return; }
     if(!confirm('确认删除该留言？')) return;
     try{
-      const res = await fetch(`${API_BASE}/api/comments/${id}`, {
+      const res = await fetch(`${API_BASE}/api/comments?id=${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + token }
       });
