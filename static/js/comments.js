@@ -72,7 +72,7 @@
   async function loadList(listEl){
     listEl.innerHTML = '加载中...';
     try {
-      const data = await fetchJSON(`${API_BASE}/api/comments?path=${encodeURIComponent(PATH)}&page=1&page_size=20`);
+      const data = await fetchJSON(`${API_BASE}?path=${encodeURIComponent(PATH)}&page=1&page_size=20`);
       const items = Array.isArray(data.items) ? data.items : [];
       if(items.length === 0){
         listEl.innerHTML = '<li>还没有留言，来当第一个吧～</li>';
@@ -107,7 +107,7 @@
     }
     formEl.querySelector('button[type="submit"]').disabled = true;
     try {
-      await fetchJSON(`${API_BASE}/api/comments`, {
+      await fetchJSON(`${API_BASE}`, {
         method: 'POST',
         body: JSON.stringify({ path: PATH, nickname, content })
       });
