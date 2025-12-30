@@ -54,13 +54,25 @@ export default async function handler(req, res) {
     }
 
     else if (method === 'DELETE') {
-      const match = pathname.match(/\/api\/comments\/(\d+)$/);
-      const id = match ? match[1] : null;
+      // 支持两种方式：
+      // 1. RESTful: /api/comments/123
+      // 2. Query 参数: /api/comments?id=123 （兼容你现有前端）
+      let id;
 
-      if (!id) {
-        return res.status(400).json({ error: 'Invalid comment ID' });
+      // 先尝试 RESTful 路径
+      const pathMatch = pathname.match(/\/api\/comments\/(\d+)$/);
+      if (pathMatch) {
+        id = pathMatch[1];
+      } else {
+        // 再尝试 query 参数
+        id = searchParams.get('id');
       }
 
+      if (!id || isNaN(id)) {
+        return res.status(400).json({ error: 'Invalid or missing comment ID' });
+      }
+
+      // 校验管理员 Token
       const auth = req.headers.authorization || '';
       if (!auth.startsWith('Bearer ') || auth.slice(7) !== ADMIN_TOKEN) {
         return res.status(401).json({ error: 'Invalid token' });
