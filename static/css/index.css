@@ -349,16 +349,23 @@ aside_content .card-info .author-info__description {
 }
 
 ::-webkit-scrollbar {
-    width: 2px;
-    height: 2px
+    width: 10px;
+    height: 10px
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to right, #FF0066 0%, #FF00CC 100%); width: 85%
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
 }
 
 ::-webkit-scrollbar-track {
-    background-color: transparent
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
 }
 
 
