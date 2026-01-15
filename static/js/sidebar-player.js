@@ -478,11 +478,46 @@
     ui.cover.src = item.cover || '/static/img/img1.png';
     // 切歌时清理探测播放标志，避免上一次交互未完成导致新歌在 metadata 到达后被意外暂停
     needPauseAfterMeta = false;
+    
+    // 触发切歌事件，通知网易云播放器加载数据
+    try {
+      var event = new CustomEvent('musicPlayerSwitch', { detail: { index: i } });
+      window.dispatchEvent(event);
+    } catch(e) {}
+    
+    // 如果是网易云歌曲且未加载，先加载数据
+    if (item.neteaseId && !item._loaded && typeof window.loadNeteaseSong === 'function') {
+      ui.title.textContent = item.title + ' (加载中...)';
+      window.loadNeteaseSong(i).then(function() {
+        // 加载完成后更新UI和播放
+        var updatedItem = window.PLAYLIST[i];
+        ui.title.textContent = updatedItem.title || '';
+        ui.artist.textContent = updatedItem.artist || '';
+        ui.cover.src = updatedItem.cover || '/static/img/img1.png';
+        state.srcList = buildSrcList(updatedItem);
+        state.srcIndex = 0;
+        setAudioToCurrent();
+        continueSwitch(i, autoPlay);
+      }).catch(function() {
+        ui.title.textContent = item.title + ' (加载失败)';
+        // 即使失败也继续，让用户可以切到下一首
+        state.srcList = buildSrcList(item);
+        state.srcIndex = 0;
+        setAudioToCurrent();
+        continueSwitch(i, autoPlay);
+      });
+      return;
+    }
+    
     // 构建源列表（优先国内 srcs，回退 url），并设置当前源
     state.srcList = buildSrcList(item);
     state.srcIndex = 0;
     setAudioToCurrent();
-
+    continueSwitch(i, autoPlay);
+  }
+  
+  function continueSwitch(i, autoPlay){
+    var item = window.PLAYLIST[i] || {};
     // 恢复进度：等待 metadata 就绪后再应用，避免早期赋值被忽略
     var saved = parseInt(lsGet('music_pos_'+i, 0),10)||0;
     pendingStartTime = isFinite(saved) ? saved : 0;
