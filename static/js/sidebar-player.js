@@ -202,6 +202,8 @@
   function setAudioToCurrent(){
     var src = state.srcList[state.srcIndex] || '';
     audio.src = encodeURI(src||'');
+    // 重置播放位置，确保从头开始播放
+    audio.currentTime = 0;
     try{ audio.load(); }catch(e){}
     // 切换源时，保持歌词区域清空，等待 canplay 再决定是否加载
     ui.lrcInner.innerHTML = '';
@@ -304,7 +306,13 @@
     try{ state.lrcMap[state.idx] = []; }catch(_){ }
     try{ ui.lrcInner.innerHTML = ''; }catch(_){ }
   });
-  audio.addEventListener('ended', function(){ next(); });
+  audio.addEventListener('ended', function(){ 
+    // 重置播放位置，避免下次播放时从结束位置开始
+    audio.currentTime = 0;
+    // 清除当前歌曲的保存位置，避免下次播放时从结束位置开始
+    lsSet('music_pos_'+state.idx, 0);
+    next(); 
+  });
   audio.volume = state.vol;
   ui.volInner.style.width = (state.vol*100).toFixed(2)+'%';
   // 操作型按钮：播放中显示“暂停(⏸)”，暂停时显示“播放(▶️)”
@@ -558,7 +566,14 @@
     var now = Date.now();
     if(!persistTime._t || now - persistTime._t > 800){
       persistTime._t = now;
-      lsSet('music_pos_'+state.idx, Math.floor(audio.currentTime||0));
+      var currentTime = Math.floor(audio.currentTime||0);
+      var duration = audio.duration||0;
+      // 如果歌曲即将结束（剩余时间少于2秒），不保存位置，避免下次从结束位置开始
+      if(isFinite(duration) && duration > 0 && (duration - currentTime) < 2){
+        lsSet('music_pos_'+state.idx, 0);
+      } else {
+        lsSet('music_pos_'+state.idx, currentTime);
+      }
     }
   }
 

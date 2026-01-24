@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,83 +8,156 @@
     <meta name="description" content="00后青年，后端开发者，略懂前端, 学生，实习，缺乏社会的毒打">
     <meta name="keywords" content="Java,Spring,个人博客，微信小程序，博客">
     <meta name="format-detection" content="telephone=no">
-    <link rel="shortcut icon" href="favicon.ico">
+    
+    <!-- 性能优化：预连接关键资源 -->
     <link rel="preconnect" href="https://cdn.staticfile.org" crossorigin>
-    <link rel="dns-prefetch" href="//cdn.staticfile.org">
-    <link rel="dns-prefetch" href="//g.gtimg.cn">
     <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
-    <!-- 预连接 Apple 预览音频与评论服务，加速首包握手 -->
-    <link rel="dns-prefetch" href="//audio-ssl.itunes.apple.com">
-    <link rel="preconnect" href="https://audio-ssl.itunes.apple.com" crossorigin>
-    <link rel="preconnect" href="https://blogbackend-sp78.onrender.com" crossorigin>
-    <link rel="stylesheet" href="static/css/index.css?v=20250827a">
-    <!-- 移除 APlayer 样式，改用自定义播放器 -->
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript">
-        if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
-            alert('朋友，上古浏览器不支持呢~');
+    <link rel="dns-prefetch" href="//busuanzi.ibruce.info">
+    <link rel="dns-prefetch" href="//v1.hitokoto.cn">
+    <link rel="dns-prefetch" href="//sdk.jinrishici.com">
+    
+    <!-- 关键CSS内联，减少阻塞 -->
+    <style>
+        /* 关键路径CSS - 首屏渲染必需 */
+        * { box-sizing: border-box; }
+        html { height: 100%; }
+        body { 
+            min-height: 100%; 
+            margin: 0; 
+            padding: 2em;
+            font-size: 14px;
+            line-height: 2;
+            font-family: '微软雅黑', Lato, Helvetica Neue, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+            color: #333;
         }
-    </script>
-    <!-- 随机背景：优先使用腾讯 g.gtimg.cn，移动端禁用 fixed，提高流畅度 -->
-    <script src="/static/js/bg.js?v=20250827a" defer></script>
-    <script>window.COMMENTS_API = '/api/comments';</script>
-    <script src="/static/js/comments.js?v=20251230" defer></script>
+        
+        /* 布局骨架 */
+        .layout_page {
+            display: flex;
+            align-items: flex-start;
+            margin: 0 auto;
+            padding: 0 5px;
+            max-width: 1200px;
+        }
+        
+        #page {
+            margin-top: 10px;
+            width: 75%;
+            padding: 20px 44px 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.24);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        #aside_content {
+            width: 25%;
+        }
+        
+        /* 响应式 */
+        @media screen and (max-width: 900px){
+            .layout_page { flex-direction: column; }
+            #page, #aside_content { width: 100% !important; }
+        }
+        
+        @media screen and (max-width: 768px){
+            body { padding: 1rem; font-size: 13px; }
+            #page { padding: 1.2rem 1rem; }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(73, 177, 245, 0.3);
+            border-radius: 50%;
+            border-top-color: #49b1f5;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <!-- 非关键CSS异步加载 -->
+    <link rel="preload" href="static/css/index.css?v=20250114d" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="static/css/index.css?v=20250114d"></noscript>
+    
+    <!-- 字体图标异步加载 -->
+    <link rel="preload" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css"></noscript>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    <!-- 背景脚本预加载 -->
+    <link rel="modulepreload" href="/static/js/bg.js?v=20250114d">
 </head>
 <body>
+    <!-- 导航栏 -->
     <header class="site-header" role="banner">
-      <div class="nav-inner">
-        <a class="brand" href="/index.html" aria-label="返回首页">xiaoyang老师</a>
-        <input id="nav-toggle" type="checkbox" class="nav-toggle" aria-label="展开菜单">
-        <label for="nav-toggle" class="nav-toggle-btn" aria-hidden="true" title="菜单">
-          <span></span>
-        </label>
-        <nav class="site-nav" role="navigation" aria-label="主导航">
-          <a href="/index.html">首页</a>
-          <a href="/blogs/index.html">博客</a>
-          <a href="#comments-section">留言</a>
-        </nav>
-      </div>
+        <div class="nav-inner">
+            <a class="brand" href="/index.html" aria-label="返回首页">xiaoyang老师</a>
+            <input id="nav-toggle" type="checkbox" class="nav-toggle" aria-label="展开菜单">
+            <label for="nav-toggle" class="nav-toggle-btn" aria-hidden="true" title="菜单">
+                <span></span>
+            </label>
+            <nav class="site-nav" role="navigation" aria-label="主导航">
+                <a href="/index.html">首页</a>
+                <a href="/blogs/index.html">博客</a>
+                <a href="#comments-section">留言</a>
+            </nav>
+        </div>
     </header>
+
     <div id="body-wrap">
         <main id="content-outer">
             <div class="layout_page" id="content-inner">
+                <!-- 侧栏 -->
                 <div class="aside_content" id="aside_content">
+                    <!-- 作者信息卡片 -->
                     <div class="card-widget card-info">
                         <div class="card-content">
                             <div class="card-info-avatar is-center">
                                 <img class="avatar-img" loading="lazy" decoding="async"
                                     src="https://cdn.jsdelivr.net/gh/laoxuai/assert/images/20200125221102.png"
-                                    alt="avatar">
+                                    alt="avatar" width="120" height="120">
                                 <div class="author-info__name">xiaoyang老师</div>
                                 <div class="author-info__description">个人博客，我想通过自己的学习，帮助到有需要的人，学习是我对自己最好的投资</div>
                             </div>
                             <div class="card-info-social-icons is-center">
-                                <a class="social-icon" href="https://github.com/sqdft" target="_blank">
+                                <a class="social-icon" href="https://github.com/sqdft" target="_blank" rel="noopener">
                                     <i class="fa fa-github"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
 
+                    <!-- 一言卡片 -->
                     <div class="card-widget card-announcement">
                         <div class="card-content">
                             <div class="item-headline">
                                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                 <span>一言</span>
                             </div>
-                            <div id="hitokoto"></div>
+                            <div id="hitokoto"><span class="loading"></span></div>
                         </div>
                     </div>
+
+                    <!-- 今日诗词卡片 -->
                     <div class="card-widget card-announcement">
                         <div class="card-content">
                             <div class="item-headline">
                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                 <span>今日诗词</span>
                             </div>
-                            <div id="jinrishici-sentence"></div>
+                            <div id="jinrishici-sentence"><span class="loading"></span></div>
                         </div>
                     </div>
 
+                    <!-- 站点信息卡片 -->
                     <div class="card-widget card-webinfo">
                         <div class="card-content">
                             <div class="item-headline">
@@ -95,328 +167,370 @@
                             <div class="webinfo">
                                 <div class="webinfo-item">
                                     <div class="webinfo-site-uv-name">本站访客数 :</div>
-                                    <div class="webinfo-site-uv-count" id="busuanzi_value_site_uv"></div>
+                                    <div class="webinfo-site-uv-count" id="busuanzi_value_site_uv">-</div>
                                 </div>
                                 <div class="webinfo-item">
                                     <div class="webinfo-site-name">本站总访问量 :</div>
-                                    <div class="webinfo-site-pv-count" id="busuanzi_value_site_pv"></div>
+                                    <div class="webinfo-site-pv-count" id="busuanzi_value_site_pv">-</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 主内容区 -->
                 <article id="page">
                     <div class="article-container">   
-                <h2>最新文章</h2>
-                <ul class="blog-list" id="blog-list">
-                <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/cs2-investment.html" rel="noopener noreferrer">
-                        CS2 饰品投资：市场分析与入门建议
-                      </a>
-                    </h3>
-                    <p>CS2饰品投资分析，反恐精英2市场动态，饰品交易心得与避坑指南。如有需要请联系我。</p>
-                    <span class="date">2026-01-14</span>
-                </li>
+                        <h2>最新文章</h2>
+                        <ul class="blog-list" id="blog-list">
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/cs2-investment.html" rel="noopener noreferrer">
+                                        CS2 饰品投资：市场分析与入门建议
+                                    </a>
+                                </h3>
+                                <p>CS2饰品投资分析，反恐精英2市场动态，饰品交易心得与避坑指南。如有需要请联系我。</p>
+                                <span class="date">2026-01-14</span>
+                            </li>
 
-                <li class="blog-item pinned">
-                    <h3><a href="/blogs/communication-groups.html">我的交流群</a></h3>
-                    <p>工具知识交流群:1050444336  欢迎大家进来学习交流，也提供各种实用的小工具</p>
-                    
-                    <span class="date">2025-08-04</span>
-                </li>
+                            <li class="blog-item pinned">
+                                <h3><a href="/blogs/communication-groups.html">我的交流群</a></h3>
+                                <p>工具知识交流群:1050444336  欢迎大家进来学习交流，也提供各种实用的小工具</p>
+                                <span class="date">2025-08-04</span>
+                            </li>
 
-                <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/jimeng-ai.html" rel="noopener noreferrer">
-                        即梦AI：无限使用创作功能指南（稳定长时输出）
-                      </a>
-                    </h3>
-                    <p>聚焦“无限使用”与稳定长时输出的可复用方案与避坑建议，支持批量化创作；可联系群主获取进阶模板。</p>
-                    <span class="date">2025-08-21</span>
-                </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/jimeng-ai.html" rel="noopener noreferrer">
+                                        即梦AI：无限使用创作功能指南（稳定长时输出）
+                                    </a>
+                                </h3>
+                                <p>聚焦"无限使用"与稳定长时输出的可复用方案与避坑建议，支持批量化创作；可联系群主获取进阶模板。</p>
+                                <span class="date">2025-08-21</span>
+                            </li>
 
-                <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/sealos-cloud.html" rel="noopener noreferrer">
-                        Sealos 云：每月 $5 免费额度 + 数据库，按需可升至 6核8G
-                      </a>
-                    </h3>
-                    <p>每月约 $5 免费额度，支持托管数据库与容器，按需可升至 6 核 8G。</p>
-                    <span class="date">2025-08-21</span>
-                </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/sealos-cloud.html" rel="noopener noreferrer">
+                                        Sealos 云：每月 $5 免费额度 + 数据库，按需可升至 6核8G
+                                    </a>
+                                </h3>
+                                <p>每月约 $5 免费额度，支持托管数据库与容器，按需可升至 6 核 8G。</p>
+                                <span class="date">2025-08-21</span>
+                            </li>
 
-                <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/google-account.html" rel="noopener noreferrer">
-                        Google 账号注册指南：尽量避免触发手机验证
-                      </a>
-                    </h3>
-                    <p>合规创建 Google 账号的准备与环境优化、常见触发原因与处理思路，并附参考视频链接与操作建议。</p>
-                    <span class="date">2025-08-20</span>
-                </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/google-account.html" rel="noopener noreferrer">
+                                        Google 账号注册指南：尽量避免触发手机验证
+                                    </a>
+                                </h3>
+                                <p>合规创建 Google 账号的准备与环境优化、常见触发原因与处理思路，并附参考视频链接与操作建议。</p>
+                                <span class="date">2025-08-20</span>
+                            </li>
 
-                <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/capcut-tutorial.html" rel="noopener noreferrer">
-                        剪映使用教程（手机端 &amp; PC 端）
-                      </a>
-                    </h3>
-                    <p>手机端与PC端的实用剪辑流程与效率技巧，覆盖常见功能与高效工作流。</p>
-                    <span class="date">2025-08-14</span>
-                </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/capcut-tutorial.html" rel="noopener noreferrer">
+                                        剪映使用教程（手机端 &amp; PC 端）
+                                    </a>
+                                </h3>
+                                <p>手机端与PC端的实用剪辑流程与效率技巧，覆盖常见功能与高效工作流。</p>
+                                <span class="date">2025-08-14</span>
+                            </li>
 
-                <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/internet-access.html" rel="noopener noreferrer">
-                        科学上网完整指南：环境配置与工具推荐
-                      </a>
-                    </h3>
-                    <p>从 0 到 1 完成环境配置，覆盖 Windows/macOS/Android/iOS，订阅导入、测速与常见问题。</p>
-                    <span class="date">2025-08-14</span>
-                </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/internet-access.html" rel="noopener noreferrer">
+                                        科学上网完整指南：环境配置与工具推荐
+                                    </a>
+                                </h3>
+                                <p>从 0 到 1 完成环境配置，覆盖 Windows/macOS/Android/iOS，订阅导入、测速与常见问题。</p>
+                                <span class="date">2025-08-14</span>
+                            </li>
 
-                <li class="blog-item">
-                    <h3><a href="/blogs/ai-help.html">
-                      最新 AI 工具速览：Grok · Claude · Gemini 2.5 Pro · ChatGPT
-                    </a></h3>
-                    <p>
-                      我为个人用户提供 **Google Gemini 2.5 Pro** 的最新使用方法和接入指导，
-                      并可使用 Grok、Claude、ChatGPT 等热门 AI 工具。欢迎直接联系我，开启你的 AI 创作之旅！
-                    </p>
-                    <span class="date">2025‑08‑05</span>
-                  </li>
+                            <li class="blog-item">
+                                <h3><a href="/blogs/ai-help.html">
+                                    最新 AI 工具速览：Grok · Claude · Gemini 2.5 Pro · ChatGPT
+                                </a></h3>
+                                <p>
+                                    我为个人用户提供 **Google Gemini 2.5 Pro** 的最新使用方法和接入指导，
+                                    并可使用 Grok、Claude、ChatGPT 等热门 AI 工具。欢迎直接联系我，开启你的 AI 创作之旅！
+                                </p>
+                                <span class="date">2025‑08‑05</span>
+                            </li>
 
-                  <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/bili-grabber.html" target="_blank" rel="noopener noreferrer">
-                       B站视频下载网页程序 — Node.js 环境部署与使用
-                      </a>
-                    </h3>
-                    <p>Node.js安装，npm依赖包安装，项目文件下载（百度网盘），最后启动服务说明。</p>
-                    <span class="date">2025-08-09</span>
-                  </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/bili-grabber.html" target="_blank" rel="noopener noreferrer">
+                                        B站视频下载网页程序 — Node.js 环境部署与使用
+                                    </a>
+                                </h3>
+                                <p>Node.js安装，npm依赖包安装，项目文件下载（百度网盘），最后启动服务说明。</p>
+                                <span class="date">2025-08-09</span>
+                            </li>
 
-                  <li class="blog-item">
-                    <h3>
-                      <a href="/blogs/cherrystudio.html" rel="noopener noreferrer">
-                        CherryStudio | 免费使用 ChatGPT 与 Gemini 2.5 Pro 等大模型
-                      </a>
-                    </h3>
-                    <p>
-                      教你如何在 CherryStudio 上免费体验多款大模型（ChatGPT、Gemini 2.5 Pro 等），
-                      覆盖入口地址、账号准备、使用技巧与常见问题，零门槛快速上手。
-                    </p>
-                    <span class="date">2025-08-12</span>
-                  </li>
+                            <li class="blog-item">
+                                <h3>
+                                    <a href="/blogs/cherrystudio.html" rel="noopener noreferrer">
+                                        CherryStudio | 免费使用 ChatGPT 与 Gemini 2.5 Pro 等大模型
+                                    </a>
+                                </h3>
+                                <p>
+                                    教你如何在 CherryStudio 上免费体验多款大模型（ChatGPT、Gemini 2.5 Pro 等），
+                                    覆盖入口地址、账号准备、使用技巧与常见问题，零门槛快速上手。
+                                </p>
+                                <span class="date">2025-08-12</span>
+                            </li>
+                        </ul>
 
-                </ul>
-
-                <nav class="pagination" id="pagination" aria-label="文章分页"></nav>
-
-                <a href="/blogs/index.html" class="more-link">查看全部文章</a>
-                <section id="comments-section">
-                  <h2>留言板</h2>
-                  <div id="comments-root"></div>
-                </section>
+                        <nav class="pagination" id="pagination" aria-label="文章分页"></nav>
+                        <a href="/blogs/index.html" class="more-link">查看全部文章</a>
+                        
+                        <section id="comments-section">
+                            <h2>留言板</h2>
+                            <div id="comments-root"></div>
+                        </section>
                     </div>
                 </article>
             </div>
         </main>
+        
         <footer id="footer">
             <div id="footer-wrap">
                 <div class="copyright">&copy;2025 - 2035 BY xl101</div>
             </div>
         </footer>
     </div>
-    <!-- 引入 jQuery 核心库，用于简化 DOM 操作、事件绑定、Ajax 等 -->
-    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
 
-    <!-- 首页未使用 Fancybox，已移除以减少体积 -->
-
-    <!-- 不蒜子网站访问统计（异步加载），用于展示页面浏览量、访客量等 -->
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-    <!-- instant.page：页面预加载插件，提高页面访问速度（当鼠标悬停链接时提前加载目标页面） -->
-    <script src="https://cdn.jsdelivr.net/npm/instant.page@3.0.0/instantpage.js" type="module"></script>
-
-    <!-- lazysizes：图片懒加载插件，仅在图片进入视口时才加载，提高性能 -->
-    <script src="https://cdn.staticfile.org/lazysizes/5.2.0/lazysizes.min.js" async></script>
-
-
-    <!-- 已移除 APlayer 与 Meting，使用自定义播放器脚本 -->
-    <!-- ===== 一言 & 今日诗词 插件 ===== -->
-
-    <!-- 一言（Hitokoto）：每天生成一句文艺短句，填充到页面指定元素（ID 为 #hitokoto） -->
-    <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
-
-    <!-- 今日诗词：自动获取一首诗词展示在页面，可增加网站文化气息 -->
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8" defer></script>
-
-
-    <script type="text/javascript">
-        console.clear();
-        console.log("%c 有朋自远方来, 不亦说乎.", "background:#24272A; color:#ffffff", "");
-        console.log("%c Github %c", "background:#24272A; color:#ffffff", "", "https://github.com/sqdft");
-        console.log("%c 版本号: %c", "background:#24272A; color:#ffffff", "", "1.0.0");
-
-
-        (function ($) {
-            $.fn.snow = function (options) {
-                var $flake = $('<div id="snowbox" />').css({ 'position': 'absolute', 'z-index': '9999', 'top': '-50px' }).html('&#10052;'),
-                    documentHeight = $(document).height(),
-                    documentWidth = $(document).width(),
-                    defaults = {
-                        minSize: 10,
-                        maxSize: 20,
-                        newOn: 1000,
-                        flakeColor: "#AFDAEF" /* 此处可以定义雪花颜色，若要白色可以改为#FFFFFF */
-                    },
-                    options = $.extend({}, defaults, options);
-                var interval = setInterval(function () {
-                    var startPositionLeft = Math.random() * documentWidth - 100,
-                        startOpacity = 0.5 + Math.random(),
-                        sizeFlake = options.minSize + Math.random() * options.maxSize,
-                        endPositionTop = documentHeight - 200,
-                        endPositionLeft = startPositionLeft - 500 + Math.random() * 500,
-                        durationFall = documentHeight * 10 + Math.random() * 5000;
-                    $flake.clone().appendTo('body').css({
-                        left: startPositionLeft,
-                        opacity: startOpacity,
-                        'font-size': sizeFlake,
-                        color: options.flakeColor
-                    }).animate({
-                        top: endPositionTop,
-                        left: endPositionLeft,
-                        opacity: 0.2
-                    }, durationFall, 'linear', function () {
-                        $(this).remove()
-                    });
-                }, options.newOn);
-            };
-        })(jQuery);
-        $(function () {
-            try {
-                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-                // 触控/移动设备默认关闭以节省资源
-                if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
-            } catch (e) {}
-            function startSnow(){
-                $.fn.snow({
-                    minSize: 5,
-                    maxSize: 32,
-                    newOn: 2400
-                });
-            }
-            if ('requestIdleCallback' in window) {
-                requestIdleCallback(startSnow, { timeout: 3000 });
-            } else {
-                setTimeout(startSnow, 1500);
-            }
-        });
-
-        // 浏览器搞笑标题
-        var OriginTitle = document.title;
-        var titleTime;
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) {
-                // $('[rel="icon"]').attr('href', "/funny.ico");
-                document.title = '╭(°A°`)╮ 页面崩溃啦 ~';
-                clearTimeout(titleTime);
-            }
-            else {
-                $('[rel="icon"]').attr('href', "/favicon.ico");
-                document.title = '(ฅ>ω<*ฅ) 噫又好啦 ~' + OriginTitle;
-                titleTime = setTimeout(function () {
-                    document.title = OriginTitle;
-                }, 2000);
-            }
-        });
-    </script>
-
+    <!-- 性能优化的脚本加载策略 -->
     <script>
-      (function(){
-        var PAGE_SIZE = 10;
-        var list = document.getElementById('blog-list');
-        if(!list) return;
-
-        function parseDate(text){
-          if(!text) return new Date(0);
-          var m = text.match(/(\d{4})\D(\d{1,2})\D(\d{1,2})/);
-          if(!m) return new Date(0);
-          var y = parseInt(m[1],10), mo = parseInt(m[2],10)-1, d = parseInt(m[3],10);
-          return new Date(y, mo, d);
+        // 关键脚本立即执行
+        window.COMMENTS_API = '/api/comments';
+        
+        // 检测IE浏览器
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            alert('朋友，上古浏览器不支持呢~');
         }
-
-        var pinned = list.querySelector('li.blog-item.pinned');
-        var allItems = Array.from(list.querySelectorAll('li.blog-item'));
-        var items = allItems.filter(function(li){ return !li.classList.contains('pinned'); });
-
-        // 按日期倒序：最新在前
-        items.sort(function(a,b){
-          var da = parseDate(a.querySelector('.date') && a.querySelector('.date').textContent.trim());
-          var db = parseDate(b.querySelector('.date') && b.querySelector('.date').textContent.trim());
-          return db - da;
-        });
-
-        var currentPage = 1;
-        var totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
-
-        function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
-
-        function renderPage(p){
-          currentPage = clamp(p, 1, totalPages);
-          // 清空除置顶外的内容
-          Array.from(list.children).forEach(function(li){ if(!li.classList.contains('pinned')) li.remove(); });
-          // 插回置顶
-          if(pinned && !list.contains(pinned)) list.insertBefore(pinned, list.firstChild);
-          // 计算页内容
-          var start = (currentPage-1)*PAGE_SIZE;
-          var pageItems = items.slice(start, start+PAGE_SIZE);
-          pageItems.forEach(function(li){ list.appendChild(li); });
-          renderPagination();
-          // 更新hash，便于返回
-          try { history.replaceState(null,'', '#page='+currentPage); } catch(e){}
-        }
-
-        function renderPagination(){
-          var pag = document.getElementById('pagination');
-          if(!pag) return;
-          pag.innerHTML = '';
-          if(totalPages <= 1) return; // 一页无需分页
-
-          function btn(label, page, disabled, current){
-            var b = document.createElement('button');
-            b.textContent = label;
-            b.disabled = !!disabled;
-            if(current) { b.setAttribute('aria-current','page'); }
-            b.style.margin = '0 .3em';
-            b.style.padding = '.3em .6em';
-            b.style.borderRadius = '6px';
-            b.style.border = '1px solid #ccc';
-            b.style.background = current ? '#49b1f5' : '#fff';
-            b.style.color = current ? '#fff' : '#333';
-            b.addEventListener('click', function(){ if(!disabled) renderPage(page); });
-            return b;
-          }
-
-          pag.appendChild(btn('上一页', currentPage-1, currentPage===1, false));
-          for(var i=1;i<=totalPages;i++){
-            pag.appendChild(btn(String(i), i, false, i===currentPage));
-          }
-          pag.appendChild(btn('下一页', currentPage+1, currentPage===totalPages, false));
-        }
-
-        // 初始页来自 hash（如 #page=2）
-        var hash = location.hash || '';
-        var m = hash.match(/page=(\d+)/);
-        var initPage = m ? parseInt(m[1],10) : 1;
-        renderPage(initPage);
-      })();
     </script>
-    <!-- 音乐播放器（使用 Apple iTunes 预览音频） -->
-    <script src="/static/js/player.config.js?v=20250114c"></script>
-    <script src="/static/js/sidebar-player.js?v=20250114c"></script>
 
-  </body>
-  </html>
+    <!-- 核心功能脚本 -->
+    <script src="/static/js/bg.js?v=20250114d" defer></script>
+    <script src="/static/js/comments.js?v=20250114d" defer></script>
+
+    <!-- 第三方脚本延迟加载 -->
+    <script>
+        // 延迟加载非关键脚本
+        window.addEventListener('load', function() {
+            // jQuery
+            var jquery = document.createElement('script');
+            jquery.src = 'https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js';
+            document.head.appendChild(jquery);
+            
+            // 统计脚本
+            jquery.onload = function() {
+                var busuanzi = document.createElement('script');
+                busuanzi.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+                busuanzi.async = true;
+                document.head.appendChild(busuanzi);
+                
+                // 预加载脚本
+                var instantPage = document.createElement('script');
+                instantPage.src = 'https://cdn.jsdelivr.net/npm/instant.page@3.0.0/instantpage.js';
+                instantPage.type = 'module';
+                document.head.appendChild(instantPage);
+                
+                var lazysizes = document.createElement('script');
+                lazysizes.src = 'https://cdn.staticfile.org/lazysizes/5.2.0/lazysizes.min.js';
+                lazysizes.async = true;
+                document.head.appendChild(lazysizes);
+            };
+        });
+        
+        // 延迟加载API脚本
+        setTimeout(function() {
+            var hitokoto = document.createElement('script');
+            hitokoto.src = 'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto';
+            document.head.appendChild(hitokoto);
+            
+            var jinrishici = document.createElement('script');
+            jinrishici.src = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';
+            jinrishici.charset = 'utf-8';
+            document.head.appendChild(jinrishici);
+        }, 1000);
+    </script>
+
+    <!-- 分页功能 -->
+    <script>
+        (function(){
+            var PAGE_SIZE = 10;
+            var list = document.getElementById('blog-list');
+            if(!list) return;
+
+            function parseDate(text){
+                if(!text) return new Date(0);
+                var m = text.match(/(\d{4})\D(\d{1,2})\D(\d{1,2})/);
+                if(!m) return new Date(0);
+                var y = parseInt(m[1],10), mo = parseInt(m[2],10)-1, d = parseInt(m[3],10);
+                return new Date(y, mo, d);
+            }
+
+            var pinned = list.querySelector('li.blog-item.pinned');
+            var allItems = Array.from(list.querySelectorAll('li.blog-item'));
+            var items = allItems.filter(function(li){ return !li.classList.contains('pinned'); });
+
+            items.sort(function(a,b){
+                var da = parseDate(a.querySelector('.date') && a.querySelector('.date').textContent.trim());
+                var db = parseDate(b.querySelector('.date') && b.querySelector('.date').textContent.trim());
+                return db - da;
+            });
+
+            var currentPage = 1;
+            var totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+
+            function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+            function renderPage(p){
+                currentPage = clamp(p, 1, totalPages);
+                Array.from(list.children).forEach(function(li){ if(!li.classList.contains('pinned')) li.remove(); });
+                if(pinned && !list.contains(pinned)) list.insertBefore(pinned, list.firstChild);
+                var start = (currentPage-1)*PAGE_SIZE;
+                var pageItems = items.slice(start, start+PAGE_SIZE);
+                pageItems.forEach(function(li){ list.appendChild(li); });
+                renderPagination();
+                try { history.replaceState(null,'', '#page='+currentPage); } catch(e){}
+            }
+
+            function renderPagination(){
+                var pag = document.getElementById('pagination');
+                if(!pag) return;
+                pag.innerHTML = '';
+                if(totalPages <= 1) return;
+
+                function btn(label, page, disabled, current){
+                    var b = document.createElement('button');
+                    b.textContent = label;
+                    b.disabled = !!disabled;
+                    if(current) { b.setAttribute('aria-current','page'); }
+                    b.style.margin = '0 .3em';
+                    b.style.padding = '.3em .6em';
+                    b.style.borderRadius = '6px';
+                    b.style.border = '1px solid #ccc';
+                    b.style.background = current ? '#49b1f5' : '#fff';
+                    b.style.color = current ? '#fff' : '#333';
+                    b.addEventListener('click', function(){ if(!disabled) renderPage(page); });
+                    return b;
+                }
+
+                pag.appendChild(btn('上一页', currentPage-1, currentPage===1, false));
+                for(var i=1;i<=totalPages;i++){
+                    pag.appendChild(btn(String(i), i, false, i===currentPage));
+                }
+                pag.appendChild(btn('下一页', currentPage+1, currentPage===totalPages, false));
+            }
+
+            var hash = location.hash || '';
+            var m = hash.match(/page=(\d+)/);
+            var initPage = m ? parseInt(m[1],10) : 1;
+            renderPage(initPage);
+        })();
+    </script>
+
+    <!-- 音乐播放器延迟加载 -->
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var playerConfig = document.createElement('script');
+                playerConfig.src = '/static/js/player.config.js?v=20250114d';
+                document.head.appendChild(playerConfig);
+                
+                playerConfig.onload = function() {
+                    var sidebarPlayer = document.createElement('script');
+                    sidebarPlayer.src = '/static/js/sidebar-player.js?v=20250114d';
+                    document.head.appendChild(sidebarPlayer);
+                };
+            }, 2000);
+        });
+    </script>
+
+    <!-- 雪花效果和其他装饰性功能 -->
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // 雪花效果
+                (function ($) {
+                    if (typeof $ === 'undefined') return;
+                    $.fn.snow = function (options) {
+                        var $flake = $('<div id="snowbox" />').css({ 'position': 'absolute', 'z-index': '9999', 'top': '-50px' }).html('&#10052;'),
+                            documentHeight = $(document).height(),
+                            documentWidth = $(document).width(),
+                            defaults = {
+                                minSize: 10,
+                                maxSize: 20,
+                                newOn: 1000,
+                                flakeColor: "#AFDAEF"
+                            },
+                            options = $.extend({}, defaults, options);
+                        var interval = setInterval(function () {
+                            var startPositionLeft = Math.random() * documentWidth - 100,
+                                startOpacity = 0.5 + Math.random(),
+                                sizeFlake = options.minSize + Math.random() * options.maxSize,
+                                endPositionTop = documentHeight - 200,
+                                endPositionLeft = startPositionLeft - 500 + Math.random() * 500,
+                                durationFall = documentHeight * 10 + Math.random() * 5000;
+                            $flake.clone().appendTo('body').css({
+                                left: startPositionLeft,
+                                opacity: startOpacity,
+                                'font-size': sizeFlake,
+                                color: options.flakeColor
+                            }).animate({
+                                top: endPositionTop,
+                                left: endPositionLeft,
+                                opacity: 0.2
+                            }, durationFall, 'linear', function () {
+                                $(this).remove()
+                            });
+                        }, options.newOn);
+                    };
+                })(window.jQuery);
+                
+                if (window.jQuery) {
+                    try {
+                        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                        if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
+                    } catch (e) {}
+                    
+                    function startSnow(){
+                        window.jQuery.fn.snow({
+                            minSize: 5,
+                            maxSize: 32,
+                            newOn: 2400
+                        });
+                    }
+                    
+                    if ('requestIdleCallback' in window) {
+                        requestIdleCallback(startSnow, { timeout: 3000 });
+                    } else {
+                        setTimeout(startSnow, 1500);
+                    }
+                }
+
+                // 浏览器标题栏效果
+                var OriginTitle = document.title;
+                var titleTime;
+                document.addEventListener('visibilitychange', function () {
+                    if (document.hidden) {
+                        document.title = '╭(°A°`)╮ 页面崩溃啦 ~';
+                        clearTimeout(titleTime);
+                    } else {
+                        document.title = '(ฅ>ω<*ฅ) 噫又好啦 ~' + OriginTitle;
+                        titleTime = setTimeout(function () {
+                            document.title = OriginTitle;
+                        }, 2000);
+                    }
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
