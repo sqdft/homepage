@@ -878,6 +878,23 @@ background: rgba(255,255,255, var(--glass-alpha-card, 0.45));
 .site-header .nav-toggle:checked + .nav-toggle-btn span::after { transform: rotate(-45deg); }
 }
 
+/* 导航栏当前页面高亮 */
+.site-header .site-nav a.current {
+  background: rgba(73,177,245,0.2);
+  color: #0a62a5;
+  font-weight: 600;
+}
+
+/* 音乐导航按钮特殊样式 */
+.site-header .site-nav a[href*="kugou-music"] {
+  position: relative;
+}
+
+.site-header .site-nav a[href*="kugou-music"]:before {
+  content: "🎵 ";
+  margin-right: 4px;
+}
+
 /* ===== 音乐推荐卡片样式 ===== */
 .music-recommend {
     padding: 0.5rem 0;
