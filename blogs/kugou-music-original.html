@@ -13,42 +13,80 @@
     <script src="/static/js/bg.js?v=20250827a" defer></script>
     <style>
         body { 
-            font-family: '微软雅黑', Arial, sans-serif; 
-            line-height: 1.6; 
+            font-family: 'Microsoft YaHei', Arial, sans-serif; 
+            line-height: 1.8; 
             margin: 0; 
-            padding: 20px; 
+            padding: 20px;
+            color: #333;
+        }
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #333;
+            color: #2c3e50;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #27ae60;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-left: 4px solid #27ae60;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #344c67;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
         p {
             color: #555;
             font-size: 16px;
-        }
-        h2 {
-            color: #27ae60;
-            margin-top: 25px;
-        }
-        h3 {
-            color: #344c67;
-            margin-top: 20px;
+            margin-bottom: 15px;
         }
         ul {
             padding-left: 20px;
+            margin-bottom: 20px;
         }
         li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            line-height: 1.8;
         }
         
         /* 音乐展示卡片 */
         .music-showcase {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
             margin: 30px 0;
-            padding: 20px;
-            background-color: #e8f4fd;
-            border-left: 5px solid #49b1f5;
-            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .music-showcase h3 {
+            margin-top: 0;
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .music-showcase p {
+            color: rgba(255, 255, 255, 0.9);
         }
         
         .music-link-container {
@@ -60,39 +98,51 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 30px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .music-listen-btn:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: #5568d3;
         }
         
         /* 行动号召区域 */
         .call-to-action {
-            margin: 30px 0;
-            padding: 20px;
-            background-color: #f0f8ff;
-            border: 2px dashed #49b1f5;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 16px;
+            padding: 35px;
+            margin-top: 40px;
+            color: white;
             text-align: center;
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.3);
+        }
+        
+        .call-to-action h3 {
+            font-size: 26px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .call-to-action p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
         }
         
         .cta-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 25px;
             flex-wrap: wrap;
         }
         
@@ -100,45 +150,49 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 15px 30px;
+            border-radius: 30px;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: bold;
+            font-size: 16px;
             transition: all 0.3s ease;
         }
         
         .cta-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            background: white;
+            color: #11998e;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .cta-primary:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: #0d7377;
         }
         
         .cta-secondary {
-            background: #fff;
-            color: #667eea;
-            border: 2px solid #667eea;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
         
         .cta-secondary:hover {
-            background: #667eea;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
         }
         
         /* 返回链接 */
         .back-links { 
             margin-top: 30px; 
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
         .back-links a { 
-            color: #007aff; 
+            color: #3498db; 
             text-decoration: none; 
-            margin-right: 12px; 
+            margin: 0 15px;
+            font-size: 16px;
         }
         .back-links a:hover { 
             text-decoration: underline; 
@@ -146,9 +200,33 @@
         
         /* 移动端优化 */
         @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .article-container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .music-showcase {
+                padding: 20px;
+            }
+            
             .music-listen-btn {
-                padding: 10px 20px;
+                padding: 12px 24px;
                 font-size: 14px;
+            }
+            
+            .call-to-action {
+                padding: 25px 20px;
             }
             
             .cta-buttons {
@@ -167,6 +245,7 @@
 <body>
     <div class="article-container">
         <h1>我的原创音乐作品 - 酷狗音乐推荐</h1>
+        <p class="subtitle">程序员的音乐创作之路 · 从代码到音符的跨界探索</p>
         
         <h2>🎵 音乐创作分享</h2>
         <p>大家好！今天想和大家分享一下我在音乐创作方面的一些尝试。作为一个主要从事后端开发的程序员，音乐创作对我来说是一个全新的领域，但也是一个充满乐趣的探索过程。</p>
