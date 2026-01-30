@@ -2,291 +2,70 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的原创音乐作品 - 酷狗音乐推荐 | xiaoyang老师</title>
     <meta name="description" content="分享我在酷狗音乐发布的原创音乐作品，欢迎试听和反馈！">
     <meta name="keywords" content="原创音乐,酷狗音乐,音乐推荐,个人作品">
     
-    <!-- 性能优化：预连接关键资源 -->
-    <link rel="preconnect" href="https://cdn.staticfile.org" crossorigin>
-    <link rel="dns-prefetch" href="//busuanzi.ibruce.info">
-    
-    <!-- 关键CSS内联 -->
+    <link rel="dns-prefetch" href="//g.gtimg.cn">
+    <link rel="preconnect" href="https://g.gtimg.cn" crossorigin>
+    <link rel="stylesheet" href="/static/css/index.css?v=20250827a">
+    <script src="/static/js/bg.js?v=20250827a" defer></script>
     <style>
-        * { box-sizing: border-box; }
-        html { height: 100%; }
         body { 
-            min-height: 100%; 
+            font-family: '微软雅黑', Arial, sans-serif; 
+            line-height: 1.6; 
             margin: 0; 
-            padding: 2em;
-            font-size: 14px;
-            line-height: 2;
-            font-family: '微软雅黑', Lato, Helvetica Neue, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+            padding: 20px; 
+        }
+        h1 {
             color: #333;
-        }
-        
-        .layout_page {
-            display: flex;
-            align-items: flex-start;
-            margin: 0 auto;
-            padding: 0 5px;
-            max-width: 1200px;
-        }
-        
-        #page {
-            margin-top: 10px;
-            width: 100%;
-            padding: 20px 44px 44px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.24);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-        }
-        
-        @media screen and (max-width: 768px){
-            body { padding: 1rem; font-size: 13px; }
-            #page { padding: 1.2rem 1rem; }
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(73, 177, 245, 0.3);
-            border-radius: 50%;
-            border-top-color: #49b1f5;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-    
-    <!-- 非关键CSS异步加载 -->
-    <link rel="preload" href="../static/css/index.css?v=20250114d" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../static/css/index.css?v=20250114d"></noscript>
-    
-    <!-- 字体图标异步加载 -->
-    <link rel="preload" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css"></noscript>
-    
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="../favicon.ico">
-</head>
-<body>
-    <!-- 导航栏 -->
-    <header class="site-header" role="banner">
-        <div class="nav-inner">
-            <a class="brand" href="../index.html" aria-label="返回首页">xiaoyang老师</a>
-            <input id="nav-toggle" type="checkbox" class="nav-toggle" aria-label="展开菜单">
-            <label for="nav-toggle" class="nav-toggle-btn" aria-hidden="true" title="菜单">
-                <span></span>
-            </label>
-            <nav class="site-nav" role="navigation" aria-label="主导航">
-                <a href="../index.html">首页</a>
-                <a href="index.html">博客</a>
-                <a href="kugou-music-original.html">音乐</a>
-                <a href="../index.html#comments-section">留言</a>
-            </nav>
-        </div>
-    </header>
-
-    <div id="body-wrap">
-        <main id="content-outer">
-            <div class="layout_page" id="content-inner">
-                <article id="page">
-                    <div class="article-container">
-                        <header class="article-header">
-                            <h1>我的原创音乐作品 - 酷狗音乐推荐</h1>
-                            <div class="article-meta">
-                                <span class="date">2026-01-30</span>
-                                <span class="tags">
-                                    <i class="fa fa-tags"></i>
-                                    <span class="tag">原创音乐</span>
-                                    <span class="tag">酷狗音乐</span>
-                                    <span class="tag">个人作品</span>
-                                </span>
-                            </div>
-                        </header>
-
-                        <div class="article-content">
-                            <h2>🎵 我的原创音乐作品</h2>
-                            <p>大家好！我在酷狗音乐平台发布了自己的原创音乐作品，想和大家分享一下。虽然我主要是做后端开发的，但音乐创作也是我的一个兴趣爱好。</p>
-
-                            <div class="music-showcase">
-                                <div class="music-card">
-                                    <div class="music-info">
-                                        <h3>🎶 立即试听</h3>
-                                        <p>这是我最新创作的原创音乐，已经在酷狗音乐上线。希望大家能够喜欢，也欢迎给我一些反馈和建议！</p>
-                                        
-                                        <div class="music-link-container">
-                                            <a href="https://m.kugou.com/share/song.html?chain=ftqbRbdFXV2" 
-                                               target="_blank" 
-                                               rel="noopener noreferrer"
-                                               class="music-listen-btn">
-                                                <i class="fa fa-headphones"></i>
-                                                点击试听我的原创音乐
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h2>💬 交流与反馈</h2>
-                            <p>如果你听了我的音乐，欢迎：</p>
-                            <ul>
-                                <li>在酷狗音乐给我点赞、评论</li>
-                                <li>在下方留言区分享你的想法</li>
-                                <li>加入我的交流群：<strong>1050444336</strong></li>
-                                <li>关注我的后续音乐作品</li>
-                            </ul>
-
-                            <div class="call-to-action">
-                                <h3>🎧 现在就去听听吧！</h3>
-                                <p>点击下方按钮，体验我的原创音乐作品，期待你的反馈！</p>
-                                <div class="cta-buttons">
-                                    <a href="https://m.kugou.com/share/song.html?chain=ftqbRbdFXV2" 
-                                       target="_blank" 
-                                       rel="noopener noreferrer"
-                                       class="cta-primary">
-                                        <i class="fa fa-music"></i>
-                                        酷狗音乐试听
-                                    </a>
-                                    <a href="../index.html#comments-section" class="cta-secondary">
-                                        <i class="fa fa-comments"></i>
-                                        留言反馈
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <footer class="article-footer">
-                            <div class="article-tags">
-                                <i class="fa fa-tags"></i>
-                                <span class="tag">原创音乐</span>
-                                <span class="tag">酷狗音乐</span>
-                                <span class="tag">音乐制作</span>
-                                <span class="tag">个人作品</span>
-                            </div>
-                            <div class="article-nav">
-                                <a href="index.html" class="nav-link">
-                                    <i class="fa fa-arrow-left"></i>
-                                    返回博客列表
-                                </a>
-                            </div>
-                        </footer>
-                    </div>
-                </article>
-            </div>
-        </main>
-        
-        <footer id="footer">
-            <div id="footer-wrap">
-                <div class="copyright">&copy;2025 - 2035 BY xl101</div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- 性能优化的脚本加载策略 -->
-    <script>
-        // 检测IE浏览器
-        if (!!window.ActiveXObject || "ActiveXObject" in window) {
-            alert('朋友，上古浏览器不支持呢~');
-        }
-    </script>
-
-    <!-- 第三方脚本延迟加载 -->
-    <script>
-        window.addEventListener('load', function() {
-            // jQuery
-            var jquery = document.createElement('script');
-            jquery.src = 'https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js';
-            document.head.appendChild(jquery);
-            
-            // 预加载脚本
-            jquery.onload = function() {
-                var instantPage = document.createElement('script');
-                instantPage.src = 'https://cdn.jsdelivr.net/npm/instant.page@3.0.0/instantpage.js';
-                instantPage.type = 'module';
-                document.head.appendChild(instantPage);
-                
-                var lazysizes = document.createElement('script');
-                lazysizes.src = 'https://cdn.staticfile.org/lazysizes/5.2.0/lazysizes.min.js';
-                lazysizes.async = true;
-                document.head.appendChild(lazysizes);
-            };
-        });
-    </script>
-
-    <style>
-        /* 文章特定样式 */
-        .article-header {
             text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px dashed rgba(73, 177, 245, 0.3);
+            margin-bottom: 10px;
         }
-        
-        .article-header h1 {
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+        h2 {
+            color: #27ae60;
+            margin-top: 25px;
+        }
+        h3 {
             color: #344c67;
-            margin-bottom: 1rem;
-            font-size: 2rem;
+            margin-top: 20px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
         }
         
-        .article-meta {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .article-meta .date {
-            margin-right: 1rem;
-        }
-        
-        .article-meta .tags {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .tag {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
+        /* 音乐展示卡片 */
         .music-showcase {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .music-card h3 {
-            color: #344c67;
-            margin-bottom: 1rem;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #e8f4fd;
+            border-left: 5px solid #49b1f5;
+            border-radius: 8px;
         }
         
         .music-link-container {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 20px;
         }
         
         .music-listen-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
+            gap: 8px;
+            padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             text-decoration: none;
             border-radius: 25px;
-            font-size: 1rem;
+            font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
@@ -294,33 +73,34 @@
         
         .music-listen-btn:hover {
             background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
             color: #fff;
         }
         
+        /* 行动号召区域 */
         .call-to-action {
-            margin: 2rem 0;
-            padding: 2rem;
-            background: rgba(73, 177, 245, 0.05);
-            border-radius: 12px;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border: 2px dashed #49b1f5;
+            border-radius: 8px;
             text-align: center;
-            border: 1px dashed rgba(73, 177, 245, 0.3);
         }
         
         .cta-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 15px;
             justify-content: center;
-            margin-top: 1.5rem;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         .cta-primary, .cta-secondary {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
+            gap: 8px;
+            padding: 10px 20px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
@@ -351,51 +131,24 @@
             color: #fff;
         }
         
-        .article-footer {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        /* 返回链接 */
+        .back-links { 
+            margin-top: 30px; 
         }
-        
-        .article-tags {
-            margin-bottom: 1rem;
+        .back-links a { 
+            color: #007aff; 
+            text-decoration: none; 
+            margin-right: 12px; 
         }
-        
-        .article-tags i {
-            margin-right: 0.5rem;
-            color: #666;
-        }
-        
-        .nav-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover {
-            color: #5568d3;
+        .back-links a:hover { 
+            text-decoration: underline; 
         }
         
         /* 移动端优化 */
         @media screen and (max-width: 768px) {
-            .article-header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .music-showcase {
-                padding: 1rem;
-            }
-            
             .music-listen-btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-            }
-            
-            .call-to-action {
-                padding: 1.5rem;
+                padding: 10px 20px;
+                font-size: 14px;
             }
             
             .cta-buttons {
@@ -410,5 +163,98 @@
             }
         }
     </style>
+</head>
+<body>
+    <div class="article-container">
+        <h1>我的原创音乐作品 - 酷狗音乐推荐</h1>
+        
+        <h2>🎵 音乐创作分享</h2>
+        <p>大家好！今天想和大家分享一下我在音乐创作方面的一些尝试。作为一个主要从事后端开发的程序员，音乐创作对我来说是一个全新的领域，但也是一个充满乐趣的探索过程。</p>
+
+        <div class="music-showcase">
+            <h3>🎶 我的原创作品</h3>
+            <p>这首歌是我最近创作的原创音乐作品，已经在酷狗音乐平台上发布。从构思到制作完成，整个过程让我体验到了音乐创作的魅力。</p>
+            
+            <div class="music-link-container">
+                <a href="https://m.kugou.com/share/song.html?chain=ftqbRbdFXV2" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="music-listen-btn">
+                    <i class="fa fa-headphones"></i>
+                    立即试听我的原创音乐
+                </a>
+            </div>
+        </div>
+
+        <h2>💡 创作心得</h2>
+        <h3>从代码到音符</h3>
+        <p>作为一个程序员，我发现音乐创作和编程有很多相似之处：</p>
+        <ul>
+            <li><strong>逻辑性</strong>：音乐的节拍、和弦进行都有其内在的逻辑结构</li>
+            <li><strong>创造性</strong>：就像写代码需要创新思维，音乐创作也需要独特的想法</li>
+            <li><strong>迭代优化</strong>：不断调试、优化，直到达到满意的效果</li>
+            <li><strong>工具运用</strong>：熟练使用各种音乐制作软件，就像掌握编程工具一样重要</li>
+        </ul>
+
+        <h3>技术栈分享</h3>
+        <p>在音乐制作过程中，我使用了以下工具和技术：</p>
+        <ul>
+            <li><strong>DAW软件</strong>：数字音频工作站，用于录制和编辑音频</li>
+            <li><strong>MIDI编程</strong>：通过MIDI协议控制虚拟乐器</li>
+            <li><strong>音频处理</strong>：EQ、压缩、混响等效果器的使用</li>
+            <li><strong>母带处理</strong>：最终的音频优化和格式转换</li>
+        </ul>
+
+        <h2>🚀 发布平台选择</h2>
+        <h3>为什么选择酷狗音乐？</h3>
+        <p>选择酷狗音乐作为发布平台主要考虑了以下几个因素：</p>
+        <ul>
+            <li><strong>用户基数大</strong>：酷狗音乐拥有庞大的用户群体，有利于作品传播</li>
+            <li><strong>支持原创</strong>：平台对原创音乐人有很好的扶持政策</li>
+            <li><strong>操作简便</strong>：上传和管理作品的流程相对简单</li>
+            <li><strong>数据分析</strong>：提供详细的播放数据和用户反馈</li>
+        </ul>
+
+        <h2>📈 未来计划</h2>
+        <p>这只是我音乐创作之路的开始，未来我计划：</p>
+        <ul>
+            <li>继续学习音乐理论和制作技巧</li>
+            <li>尝试不同风格的音乐创作</li>
+            <li>与其他音乐人合作交流</li>
+            <li>定期发布新的原创作品</li>
+            <li>分享更多音乐制作的技术心得</li>
+        </ul>
+
+        <h2>💬 互动交流</h2>
+        <p>如果你也对音乐创作感兴趣，或者有任何建议和想法，欢迎：</p>
+        <ul>
+            <li>在下方留言区与我交流</li>
+            <li>加入我的交流群：<strong>1050444336</strong></li>
+            <li>关注我的酷狗音乐账号，获取最新作品动态</li>
+        </ul>
+
+        <div class="call-to-action">
+            <h3>🎧 现在就去听听吧！</h3>
+            <p>点击下方按钮，体验我的原创音乐作品，期待你的反馈！</p>
+            <div class="cta-buttons">
+                <a href="https://m.kugou.com/share/song.html?chain=ftqbRbdFXV2" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="cta-primary">
+                    <i class="fa fa-music"></i>
+                    酷狗音乐试听
+                </a>
+                <a href="../index.html#comments-section" class="cta-secondary">
+                    <i class="fa fa-comments"></i>
+                    留言反馈
+                </a>
+            </div>
+        </div>
+
+        <div class="back-links">
+            <a href="/blogs/index.html">返回文章列表</a>
+            <a href="/index.html">返回首页</a>
+        </div>
+    </div>
 </body>
 </html>""
