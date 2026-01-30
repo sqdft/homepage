@@ -877,3 +877,52 @@ background: rgba(255,255,255, var(--glass-alpha-card, 0.45));
 .site-header .nav-toggle:checked + .nav-toggle-btn span::before { transform: rotate(45deg); }
 .site-header .nav-toggle:checked + .nav-toggle-btn span::after { transform: rotate(-45deg); }
 }
+
+/* ===== 音乐推荐卡片样式 ===== */
+.music-recommend {
+    padding: 0.5rem 0;
+}
+
+.music-recommend p {
+    margin: 0 0 0.8rem 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.music-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.music-link:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    color: #fff;
+}
+
+.music-link i {
+    font-size: 1rem;
+}
+
+/* 移动端音乐推荐优化 */
+@media screen and (max-width: 768px) {
+    .music-link {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .music-recommend p {
+        font-size: 0.85rem;
+    }
+}
