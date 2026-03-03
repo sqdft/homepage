@@ -38,7 +38,6 @@ export default async function handler(req, res) {
     }
 
     else if (method === 'POST') {
-      // bodyParser: true 已开启，req.body 直接是对象
       const { path = '/index', nickname, content } = req.body || {};
 
       if (!nickname?.trim() || !content?.trim()) {
@@ -54,17 +53,11 @@ export default async function handler(req, res) {
     }
 
     else if (method === 'DELETE') {
-      // 支持两种方式：
-      // 1. RESTful: /api/comments/123
-      // 2. Query 参数: /api/comments?id=123 （兼容你现有前端）
       let id;
-
-      // 先尝试 RESTful 路径
       const pathMatch = pathname.match(/\/api\/comments\/(\d+)$/);
       if (pathMatch) {
         id = pathMatch[1];
       } else {
-        // 再尝试 query 参数
         id = searchParams.get('id');
       }
 
@@ -72,7 +65,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Invalid or missing comment ID' });
       }
 
-      // 校验管理员 Token
       const auth = req.headers.authorization || '';
       if (!auth.startsWith('Bearer ') || auth.slice(7) !== ADMIN_TOKEN) {
         return res.status(401).json({ error: 'Invalid token' });
@@ -91,16 +83,22 @@ export default async function handler(req, res) {
       res.status(405).json({ error: 'Method Not Allowed' });
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error('API Error:', {
+      message: error.message,
+      stack: error.stack,
+      cause: error.cause,
+      name: error.name
+    });
     res.status(500).json({ 
       error: 'Internal Server Error',
-      message: error.message 
+      message: error.message || 'Unknown error',
+      type: error.name
     });
   }
 }
 
 export const config = {
   api: {
-    bodyParser: true,  // 必须开启，让 Vercel 自动解析 JSON
+    bodyParser: true,
   },
 };
