@@ -1,37 +1,29 @@
-// Netlify Functions
-// 访问路径: /.netlify/functions/comments
+// api/comments.js
+import { neon } from '@neondatabase/serverless';
 
-exports.handler = async (event, context) => {
-  // 动态导入 Neon
-  const { neon } = await import('@neondatabase/serverless');
-  const sql = neon(process.env.DATABASE_URL);
-  const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
-  // CORS 头
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS',
-    'Access-Control-Allow-Headers': 'Authorization, Content-Type',
-    'Content-Type': 'application/json'
-  };
+const sql = neon(process.env.DATABASE_URL);
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 
-  // 处理 OPTIONS 预检请求
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: ''
-    };
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
   }
 
+  const { method } = req;
+  const url = new URL(req.url, `https://${req.headers.host}`);
+  const pathname = url.pathname;
+  const searchParams = url.searchParams;
+
   try {
-    const method = event.httpMethod;
-    const params = event.queryStringParameters || {};
-    
-    // GET - 获取评论列表
     if (method === 'GET') {
-      const path = params.path || '/index';
-      const page = parseInt(params.page || '1');
-      const pageSize = parseInt(params.page_size || '20');
+      const path = searchParams.get('path') || '/index';
+      const page = parseInt(searchParams.get('page') || '1');
+      const pageSize = parseInt(searchParams.get('page_size') || '20');
       const offset = (page - 1) * pageSize;
 
       const items = await sql`
@@ -42,24 +34,15 @@ exports.handler = async (event, context) => {
         LIMIT ${pageSize} OFFSET ${offset}
       `;
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ items })
-      };
+      res.status(200).json({ items });
     }
 
-    // POST - 创建新评论
     else if (method === 'POST') {
-      const body = JSON.parse(event.body || '{}');
-      const { path = '/index', nickname, content } = body;
+      // bodyParser: true 已开启，req.body 直接是对象
+      const { path = '/index', nickname, content } = req.body || {};
 
       if (!nickname?.trim() || !content?.trim()) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'nickname 和 content 必填' })
-        };
+        return res.status(400).json({ error: 'nickname 和 content 必填' });
       }
 
       await sql`
@@ -67,69 +50,57 @@ exports.handler = async (event, context) => {
         VALUES (${path}, ${nickname.trim()}, ${content.trim()}, NOW())
       `;
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ success: true })
-      };
+      res.status(200).json({ success: true });
     }
 
-    // DELETE - 删除评论（管理员）
     else if (method === 'DELETE') {
-      const id = params.id;
+      // 支持两种方式：
+      // 1. RESTful: /api/comments/123
+      // 2. Query 参数: /api/comments?id=123 （兼容你现有前端）
+      let id;
+
+      // 先尝试 RESTful 路径
+      const pathMatch = pathname.match(/\/api\/comments\/(\d+)$/);
+      if (pathMatch) {
+        id = pathMatch[1];
+      } else {
+        // 再尝试 query 参数
+        id = searchParams.get('id');
+      }
 
       if (!id || isNaN(id)) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({ error: 'Invalid or missing comment ID' })
-        };
+        return res.status(400).json({ error: 'Invalid or missing comment ID' });
       }
 
       // 校验管理员 Token
-      const auth = event.headers.authorization || event.headers.Authorization || '';
+      const auth = req.headers.authorization || '';
       if (!auth.startsWith('Bearer ') || auth.slice(7) !== ADMIN_TOKEN) {
-        return {
-          statusCode: 401,
-          headers,
-          body: JSON.stringify({ error: 'Invalid token' })
-        };
+        return res.status(401).json({ error: 'Invalid token' });
       }
 
       const result = await sql`DELETE FROM comments WHERE id = ${id}`;
 
       if (result.rowCount === 0) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ error: 'Comment not found' })
-        };
+        return res.status(404).json({ error: 'Comment not found' });
       }
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ success: true })
-      };
+      res.status(200).json({ success: true });
     }
 
     else {
-      return {
-        statusCode: 405,
-        headers,
-        body: JSON.stringify({ error: 'Method Not Allowed' })
-      };
+      res.status(405).json({ error: 'Method Not Allowed' });
     }
-
   } catch (error) {
     console.error('Error:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ 
-        error: 'Internal Server Error',
-        message: error.message 
-      })
-    };
+    res.status(500).json({ 
+      error: 'Internal Server Error',
+      message: error.message 
+    });
   }
+}
+
+export const config = {
+  api: {
+    bodyParser: true,  // 必须开启，让 Vercel 自动解析 JSON
+  },
 };
