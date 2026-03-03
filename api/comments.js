@@ -1,12 +1,11 @@
 // Netlify Functions
 // 访问路径: /.netlify/functions/comments
 
-import { neon } from '@neondatabase/serverless';
-
-const sql = neon(process.env.DATABASE_URL);
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
-
 exports.handler = async (event, context) => {
+  // 动态导入 Neon
+  const { neon } = await import('@neondatabase/serverless');
+  const sql = neon(process.env.DATABASE_URL);
+  const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
   // CORS 头
   const headers = {
     'Access-Control-Allow-Origin': '*',
